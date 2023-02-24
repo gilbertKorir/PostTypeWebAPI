@@ -113,12 +113,12 @@ namespace ApiPerson.Controllers
         
         [Route("Delete")]
         [HttpPost]
-        public IHttpActionResult DeletePerson(int id)
+        public IHttpActionResult DeletePerson(Person person)
         {
             string msg = "";
-            SqlCommand cmd = new SqlCommand("usp_DeleteEmployee", _connection);
+            SqlCommand cmd = new SqlCommand("spDeletePerson", _connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@Id", person.Id);
 
             _connection.Open();
             int i = cmd.ExecuteNonQuery();
