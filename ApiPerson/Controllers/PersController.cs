@@ -109,6 +109,31 @@ namespace ApiPerson.Controllers
             }
             return Ok(msg);
         }
+         
+        
+        [Route("Delete")]
+        [HttpPost]
+        public IHttpActionResult DeletePerson(int id)
+        {
+            string msg = "";
+            SqlCommand cmd = new SqlCommand("usp_DeleteEmployee", _connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Id", id);
+
+            _connection.Open();
+            int i = cmd.ExecuteNonQuery();
+
+            if (i > 0)
+            {
+                msg = "Data has been Deleted";
+            }
+            else
+            {
+                msg = "Error";
+            }
+
+            return Ok(msg);
+        }
 
     }
 }
