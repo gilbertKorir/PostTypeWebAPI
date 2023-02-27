@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiPerson", "ApiPerson\ApiPerson.csproj", "{DC50CCD5-6FCC-44F1-AB8A-48653A4BC2DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FetchPerson", "FetchPerson\FetchPerson.csproj", "{572C260B-F797-4566-B1D8-CDA2D742A136}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DC50CCD5-6FCC-44F1-AB8A-48653A4BC2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC50CCD5-6FCC-44F1-AB8A-48653A4BC2DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC50CCD5-6FCC-44F1-AB8A-48653A4BC2DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{572C260B-F797-4566-B1D8-CDA2D742A136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{572C260B-F797-4566-B1D8-CDA2D742A136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{572C260B-F797-4566-B1D8-CDA2D742A136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{572C260B-F797-4566-B1D8-CDA2D742A136}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

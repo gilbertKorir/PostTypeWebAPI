@@ -18,11 +18,13 @@ namespace ApiPerson.Controllers
     {
         SqlConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings["conn"].ConnectionString);
 
+        public string _conn = ConfigurationManager.ConnectionStrings["conn"].ConnectionString;
+
         [Route("Add")]
         [HttpPost]
         public IHttpActionResult AddPerson(Person obj_person)
         {
-            string json;
+            //string json;
             string msg = "";
             if(obj_person != null)
             {
@@ -30,6 +32,7 @@ namespace ApiPerson.Controllers
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Name", obj_person.Name);
                 cmd.Parameters.AddWithValue("@Age", obj_person.Age);
+                cmd.Parameters.AddWithValue("@Active", obj_person.Active);
 
                 _connection.Open();
 
@@ -44,17 +47,18 @@ namespace ApiPerson.Controllers
                     msg = "Something is wring ";
                 }
             }
-            json = JsonConvert.SerializeObject(obj_person);
+            /*json = JsonConvert.SerializeObject(obj_person);
             var response = this.Request.CreateResponse(HttpStatusCode.Created);
             response.Headers.Location = new Uri(Request.RequestUri + obj_person.Id.ToString());
-            response.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            response.Content = new StringContent(json, Encoding.UTF8, "application/json");*/
             return Ok(msg);
         } 
         
         [Route("Fetch")]
-        [HttpPost]
+        [HttpGet]
         public IHttpActionResult FetchPerson()
         {
+            //string msg = "no data";
             SqlDataAdapter da = new SqlDataAdapter("spGetAll", _connection);
             da.SelectCommand.CommandType = CommandType.StoredProcedure;
             DataTable dt = new DataTable();
@@ -69,17 +73,20 @@ namespace ApiPerson.Controllers
                     emp.Name = dt.Rows[i]["Name"].ToString();
                     emp.Id = Convert.ToInt32(dt.Rows[i]["Id"].ToString());
                     emp.Age = Convert.ToInt32(dt.Rows[i]["Age"].ToString());
+                    emp.Active = Convert.ToInt32(dt.Rows[i]["Active"].ToString());
                     lstPerson.Add(emp);
                 }
             }
             if (lstPerson.Count > 0)
             {
-                return Ok(lstPerson);
+                return Json(lstPerson);
             }
             else
             {
                 return null;
+                
             }
+            
         }
         
         [Route("Edit")]
@@ -94,6 +101,7 @@ namespace ApiPerson.Controllers
                 cmd.Parameters.AddWithValue("@Id", person.Id);
                 cmd.Parameters.AddWithValue("@Name", person.Name);
                 cmd.Parameters.AddWithValue("@Age", person.Age);
+                cmd.Parameters.AddWithValue("@Active", person.Active);
 
                 _connection.Open();
                 int i = cmd.ExecuteNonQuery();
@@ -137,3 +145,69 @@ namespace ApiPerson.Controllers
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+        [Route("GetCustomers")]
+        [HttpGet]
+        public IHttpActionResult GetCustomers()
+        {
+            using (var connection = new SqlConnection(_conn))
+            {
+                var command = new SqlCommand("spGetAll", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                connection.Open();
+
+                var dataReader = command.ExecuteReader();
+                var dataTable = new DataTable();
+                dataTable.Load(dataReader);
+
+                return Json(dataTable);
+            }
+        }*/
