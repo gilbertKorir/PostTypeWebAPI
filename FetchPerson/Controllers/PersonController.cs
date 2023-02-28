@@ -42,12 +42,40 @@ namespace FetchPerson.Controllers
             return Json(_persons);
         }
 
-        public  async Task AddEmployee(PersonModel personModel)
+        [HttpPost]
+        public  async Task<PersonModel> AddEmployee(PersonModel personModel)
         {
+            _person = new PersonModel();
             var client = new HttpClient();
             var empContent = new StringContent(JsonConvert.SerializeObject(personModel), Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("https://localhost:44368/api/person/add", empContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string apiRes = await response.Content.ReadAsStringAsync();
+                _person = JsonConvert.DeserializeObject<PersonModel>(apiRes);
+            }
+            return _person;
+          
         }
+
+
+        [HttpPost]
+        public  async Task<PersonModel> UpdateEmp(PersonModel person)
+        {
+            _person = new PersonModel();
+            var client = new HttpClient();
+            var empContent = new StringContent(JsonConvert.SerializeObject(person), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync("https://localhost:44368/api/person/edit", empContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string apiRes = await response.Content.ReadAsStringAsync();
+                person = JsonConvert.DeserializeObject<PersonModel>(apiRes);
+            }
+            return _person;
+        }
+
     }
 }
 
@@ -76,6 +104,35 @@ namespace FetchPerson.Controllers
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+[HttpPost]
+public async Task<PersonModel> AddEmp(PersonModel personModel)
+{
+    _person = new PersonModel();
+    using (var client = new HttpClient())
+    {
+        StringContent empContent = new StringContent(JsonConvert.SerializeObject(personModel), Encoding.UTF8, "application/json");
+        using (var response = await client.PostAsync("https://localhost:44368/api/person/add", empContent))
+        {
+            string res = await response.Content.ReadAsStringAsync();
+            _person = JsonConvert.DeserializeObject<PersonModel>(res);
+        }
+    }
+    return _person;
+}
+*/
 
 
 
