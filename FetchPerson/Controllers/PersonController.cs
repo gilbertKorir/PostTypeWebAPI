@@ -24,7 +24,7 @@ namespace FetchPerson.Controllers
             clienthandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, SslPolicyErrors) => { return true; };
         }
         // GET: Pers
-        public ActionResult Index()
+        public ActionResult PersonAction()
         {
             return View();
         }

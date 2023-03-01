@@ -1,0 +1,35 @@
+﻿
+<link href="~/Content/emp.css" rel="stylesheet" />
+
+<div class="row"style="padding:4px; margin-top:10px;">
+    <h3 class="text-center">Individuals Account Names</h3>
+    <div class="col-md-3">
+        Account Name
+    </div>
+    <div class="col-md-9">
+        <input id="txtName" placeholder="account Name" type="text"/>
+    </div>
+    
+    <div class="col-md-3">
+        KYCID
+    </div>
+    <div class="col-md-9">
+        <select id="txtKyc"></select>
+    </div>
+    
+    <div class="col-md-3">
+        Active Status
+    </div>
+    <div class="col-md-9">
+        <input id="txtActive" type="checkbox"/>
+    </div>
+    
+    <div class="col-md-12">
+        <button class="btn btn-primary mb-4" style="margin-left:240px;" onclick="saveAccount()" id="save">Save account</button>
+    </div>
+
+</div>
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/accounts.js"></script>

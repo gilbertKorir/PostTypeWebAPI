@@ -47,10 +47,7 @@ namespace ApiPerson.Controllers
                     msg = "Something is wring ";
                 }
             }
-            /*json = JsonConvert.SerializeObject(obj_person);
-            var response = this.Request.CreateResponse(HttpStatusCode.Created);
-            response.Headers.Location = new Uri(Request.RequestUri + obj_person.Id.ToString());
-            response.Content = new StringContent(json, Encoding.UTF8, "application/json");*/
+           
             return Ok(msg);
         } 
         
@@ -141,6 +138,38 @@ namespace ApiPerson.Controllers
             }
 
             return Ok(msg);
+        }
+
+        [Route("GetNames")]
+        [HttpGet]
+        public IHttpActionResult FetchName()
+        {
+            //string msg = "no data";
+            SqlDataAdapter da = new SqlDataAdapter("spGetNames", _connection);
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+
+            List<Person> lstPerson = new List<Person>();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Person emp = new Person();
+                    emp.Name = dt.Rows[i]["Name"].ToString();
+                    lstPerson.Add(emp);
+                }
+            }
+            if (lstPerson.Count > 0)
+            {
+                return Json(lstPerson);
+            }
+            else
+            {
+                return null;
+
+            }
+
         }
 
     }

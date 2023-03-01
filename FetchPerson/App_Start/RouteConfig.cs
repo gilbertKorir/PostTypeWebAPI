@@ -14,10 +14,22 @@ namespace FetchPerson
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Person", action = "Index", id = UrlParameter.Optional }
-            );
+             name: "PersonRoute",
+             url: "{controller}/{action}/{id}",
+             defaults: new { controller = "Person", action = "PersonAction", id = UrlParameter.Optional }
+         );  
+            routes.MapRoute(
+             name: "AccountsRoute",
+             url: "{controller}/{action}/{id}",
+             defaults: new { controller = "Accounts", action = "AccountsAction", id = UrlParameter.Optional }
+         );
+
+            routes.MapRoute(
+             name: "Default",
+             url: "{controller}/{action}/{id}",
+             defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+         );
+
         }
     }
 }
