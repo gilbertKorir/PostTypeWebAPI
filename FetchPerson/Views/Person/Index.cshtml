@@ -1,4 +1,5 @@
 ﻿<link href="~/Content/emp.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 
 <div class="row">
     <h2>Fetching Api using Ajax Jquery and Js</h2>
@@ -33,17 +34,19 @@
 
     <div class="col-md-12">
         <button class="btn btn-primary" onclick="Add()">Add</button>
+       <button id="update" class="btn btn-success update" onclick="updateEmployee()" style="display:none;">Update</button>
     </div>
 
     <div class="col-md-12">
-        <table class="table table-bordered table-striped table-responsive">
-            <thead>
+        <table class="table table-dark table-bordered table-striped table-responsive">
+            <thead class="thead-dark">
                 <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Active</th>
-                <th>Edit</th>
-            </tr>
+                    <th>Employee Id</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Active</th>
+                    <th>Edit</th>
+                </tr>
             </thead>
             <tbody id="tbody"></tbody>
         </table>

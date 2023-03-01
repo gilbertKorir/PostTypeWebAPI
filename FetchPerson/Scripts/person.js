@@ -2,6 +2,7 @@
     fetchData();
 });
 
+var EmpData = null;
 
 //clear fields function
 function clear() {
@@ -9,6 +10,7 @@ function clear() {
     $('#txtAge').val('');
     $('#txtActive').prop('checked', false);
     $('#txtId').val('');
+    $('#update').hide();
 }
 
 //add employee
@@ -25,9 +27,9 @@ function Add() {
     else {
         objEmp.Active = 0;
     }
-    //alert(JSON.stringify(objEmp));
+
     $.ajax({
-        url: "/Person/AddEmployee",
+        url:"/Person/AddEmployee",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify(objEmp),
@@ -37,7 +39,7 @@ function Add() {
             clear();
         },
         error: function (msg) {
-            alert("dice");
+            alert("Error adding the data");
            // fetchData();
             //clear();
         }
@@ -53,15 +55,17 @@ function fetchData() {
         success: function (data) {
             //alert(JSON.stringify(data));
             if (data) {
+                EmpData = data;
                 $("#tbody").html("");
                 var row = "";
                 for (let i = 0; i< data.length; i++) {
                     row = row
                         + "<tr>"
+                        + "<td>" + data[i].Id + "</td>"
                         + "<td>" + data[i].Name + "</td>"
                         + "<td>" + data[i].Age + "</td>"
                         + "<td>" + data[i].Active + "</td>"
-                        + "<td><button id='btnEdit' class='btn btn-success' onclick='Edit(" + data[i].Id + ")'>Edit</button></td>"
+                        + "<td><button id='btnEdit' class='btn btn-success' onclick='editproduct(" + i + ")'>Edit</button></td>"
                         + "</tr>";
                 }
                 if (row != null) {
@@ -74,51 +78,24 @@ function fetchData() {
         }
     });
 }
+function editproduct(i) {
+    $(".empId").show();
+    $("#update").show();
 
-function Edit(id) {
-    if (id > 0) {
-        $.ajax({
-            url: "/Person/UpdateEmp?id=" + id,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            type: "POST",
-            success: function (data) {
-                $(".empId").show();
+    $("#txtName").val(EmpData[i].Name);
+    $("#txtAge").val(EmpData[i].Age);
+    $("#txtActive").val(EmpData[i].Active);
+    $("#txtId").val(EmpData[i].Id);
 
-            $("#txtName").val();
-              $("#txtAge").val();
-              $("#txtActive").val();
-               $("#txtId").val();
-
-            },
-            error: function (msg) {
-                fetchData();
-                clear();
-            }
-        });
-    }
 }
 
+function updateEmployee() {
 
-$(document).ready(function () {
-    fetchData();
-});
-
-
-//clear fields function
-function clear() {
-    $('#txtName').val('');
-    $('#txtAge').val('');
-    $('#txtActive').prop('checked', false);
-    $('#txtId').val('');
-}
-
-//add employee
-function Add() {
     var objEmp = {};
 
     objEmp.Name = $("#txtName").val();
     objEmp.Age = $("#txtAge").val();
+    objEmp.Id = $("#txtId").val();
 
     var checkBox = $("#txtActive").is(':checked');
     if (checkBox) {
@@ -127,75 +104,25 @@ function Add() {
     else {
         objEmp.Active = 0;
     }
+
     //alert(JSON.stringify(objEmp));
-    $.ajax({
-        url: "/Person/AddEmployee",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify(objEmp),
-        type: "POST",
-        success: function (data) {
-            fetchData();
-            clear();
-        },
-        error: function (msg) {
-            fetchData();
-            clear();
-        }
-    });
-}
+    var empId = $("#txtId").val();
 
-function fetchData() {
-    $.ajax({
-        type: "POST",
-        url: "/Person/GetAllEmployees",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-            //alert(JSON.stringify(data));
-            if (data) {
-                $("#tbody").html("");
-                var row = "";
-                for (let i = 0; i< data.length; i++) {
-                    row = row
-                        + "<tr>"
-                        + "<td>" + data[i].Name + "</td>"
-                        + "<td>" + data[i].Age + "</td>"
-                        + "<td>" + data[i].Active + "</td>"
-                        + "<td><button id='btnEdit' class='btn btn-success' onclick='editproduct(" + data[i].Id + ")'>Edit</button></td>"
-                        + "</tr>";
-                }
-                if (row != null) {
-                    $("#tbody").append(row);
-                }
-            }
-        },
-        error: function (xhr, status, error) {
-            alert("error in operation");
-        }
-    });
-}
-
-function editproduct(id) {
-    $(".empId").show();
- 
-    if (id > 0) {
+    if (empId) {
         $.ajax({
             url: "/Person/UpdateEmp",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
+            data: JSON.stringify(objEmp),
             type: "POST",
             success: function (data) {
-                //console.log(data); 
-                $("#txtName").val(data.Name);
-                $("#txtAge").val(data.Age);
-                $("#txtActive").val(data.Active);
-                $("#txtId").val(data.Id);
-
+                fetchData();
+                $(".empId").hide();
+                clear();
             },
             error: function (msg) {
-                alert("error");
-                //fetchData();
+                alert("Error updating the data");
+                // fetchData();
                 //clear();
             }
         });

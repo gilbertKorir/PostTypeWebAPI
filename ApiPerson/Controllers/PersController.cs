@@ -143,49 +143,75 @@ namespace ApiPerson.Controllers
             return Ok(msg);
         }
 
-        [Route("Find")]
-        [HttpPost]
-        public IHttpActionResult GetById(Person person)
-        {
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["conn"].ConnectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand("spFindById", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@Id", person.Id);
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            // Map the record to your model class
-                            var record = new Person()
-                            {
-                                Id = (int)reader["Id"],
-                                Name = reader["Name"].ToString(),
-                                Age = (int)reader["Age"],
-                                Active = (int)reader["Active"]
-                                // Add other properties as needed
-                            };
-
-                            return Ok(record);
-                        }
-                        else
-                        {
-                            return NotFound();
-                        }
-                    }
-                }
-            }
-        }
-
-
-
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*[Route("Find")]
+[HttpPost]
+public IHttpActionResult GetById(Person person)
+{
+    using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["conn"].ConnectionString))
+    {
+        connection.Open();
+
+        using (var command = new SqlCommand("spFindById", connection))
+        {
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@Id", person.Id);
+
+            using (var reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    // Maping the record to your model class
+                    var record = new Person()
+                    {
+                        Id = (int)reader["Id"],
+                        Name = reader["Name"].ToString(),
+                        Age = (int)reader["Age"],
+                        Active = (int)reader["Active"]
+
+                    };
+
+                    return Ok(record);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+        }
+    }
+}*/
 
 
 

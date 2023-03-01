@@ -43,39 +43,33 @@ namespace FetchPerson.Controllers
         }
 
         [HttpPost]
-        public  async Task<PersonModel> AddEmployee(PersonModel personModel)
+        public  async Task<JsonResult> AddEmployee(PersonModel personModel)
         {
-            _person = new PersonModel();
-            var client = new HttpClient();
-            var empContent = new StringContent(JsonConvert.SerializeObject(personModel), Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync("https://localhost:44368/api/person/add", empContent);
+
+            var content = new StringContent(JsonConvert.SerializeObject(personModel), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:44368/api/person/add", content);
 
             if (response.IsSuccessStatusCode)
             {
-                string apiRes = await response.Content.ReadAsStringAsync();
-                _person = JsonConvert.DeserializeObject<PersonModel>(apiRes);
+                return Json(new { success = true });
             }
-            return _person;
-          
+
+            return Json(new { success = false });
         }
 
 
         [HttpPost]
-        public  async Task<PersonModel> UpdateEmp(PersonModel person)
+        public  async Task<JsonResult> UpdateEmp(PersonModel person)
         {
-            _person = new PersonModel();
-            var client = new HttpClient();
-            var empContent = new StringContent(JsonConvert.SerializeObject(person), Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync("https://localhost:44368/api/person/edit", empContent);
+            var content = new StringContent(JsonConvert.SerializeObject(person), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:44368/api/person/edit", content);
 
             if (response.IsSuccessStatusCode)
             {
-                string apiRes = await response.Content.ReadAsStringAsync();
-                person = JsonConvert.DeserializeObject<PersonModel>(apiRes);
+                return Json(new { success = true });
             }
-            return _person;
+            return Json(new { success = false });
         }
-
     }
 }
 
