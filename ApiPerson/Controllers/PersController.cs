@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Web.Http;
 
@@ -171,6 +172,35 @@ namespace ApiPerson.Controllers
             }
 
         }
+
+        [Route("AddAccount")]
+        [HttpPost]
+        public IHttpActionResult AddAccount(AccountsModel accountsModel) {
+            string msg = "";
+            if(accountsModel != null)
+            {
+                SqlCommand cmd = new SqlCommand("spAddAccount", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AccountName", accountsModel.AccountName);
+                cmd.Parameters.AddWithValue("@KycId", accountsModel.KycId);
+                cmd.Parameters.AddWithValue("@Active", accountsModel.Active);
+
+                _connection.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i > 0)
+                {
+                    msg = "Account has been added";
+                }
+                else
+                {
+                    msg = "Error in adding an account";
+                }
+            }
+            return Ok(msg);
+        }
+
+
 
     }
 }
