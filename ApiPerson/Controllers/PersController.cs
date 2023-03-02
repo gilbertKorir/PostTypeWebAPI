@@ -141,12 +141,12 @@ namespace ApiPerson.Controllers
             return Ok(msg);
         }
 
-        [Route("GetNames")]
+        [Route("GetIds")]
         [HttpGet]
         public IHttpActionResult FetchName()
         {
             //string msg = "no data";
-            SqlDataAdapter da = new SqlDataAdapter("spGetNames", _connection);
+            SqlDataAdapter da = new SqlDataAdapter("spGetIds", _connection);
             da.SelectCommand.CommandType = CommandType.StoredProcedure;
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -157,7 +157,7 @@ namespace ApiPerson.Controllers
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Person emp = new Person();
-                    emp.Name = dt.Rows[i]["Name"].ToString();
+                    emp.Id = Convert.ToInt32(dt.Rows[i]["Id"].ToString());
                     lstPerson.Add(emp);
                 }
             }
@@ -200,7 +200,92 @@ namespace ApiPerson.Controllers
             return Ok(msg);
         }
 
+        [Route("FetchAccount")]
+        [HttpGet]
+       public IHttpActionResult GetAccounts()
+        {
+            string msg = "";
+            SqlDataAdapter da = new SqlDataAdapter("spGetAccounts", _connection);
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            DataTable dt = new DataTable();
+            da.Fill(dt);
 
+            List<AccountsModel> lstAccounts = new List<AccountsModel>();
+            if(dt.Rows.Count > 0)
+            {
+                for(int i = 0; i < dt.Rows.Count; i++)
+                {
+                    AccountsModel acc = new AccountsModel();
+                    acc.AccountName = dt.Rows[i]["AccountName"].ToString();
+                    acc.KycId = dt.Rows[i]["KycId"].ToString();
+                    acc.Id = Convert.ToInt32(dt.Rows[i]["Id"].ToString());
+                    acc.Active = Convert.ToInt32(dt.Rows[i]["Active"].ToString());
+                    lstAccounts.Add(acc);
+                }
+
+                if(lstAccounts.Count> 0)
+                {
+                    return Ok(lstAccounts);
+                }
+                else
+                {
+                    msg = "Accounts not found";
+                }
+            }
+            return Ok(msg);
+        }
+
+        [Route("UpdateAccount")]
+        [HttpPost]
+        public IHttpActionResult UpdateAccounts(AccountsModel accountsModel)
+        {
+            string msg = "";
+            if(accountsModel != null)
+            {
+                SqlCommand cmd = new SqlCommand("spUpdateUserAccount", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", accountsModel.Id);
+                cmd.Parameters.AddWithValue("@AccountName", accountsModel.AccountName);
+                cmd.Parameters.AddWithValue("@KycId", accountsModel.KycId);
+                cmd.Parameters.AddWithValue("@Active", accountsModel.Active);
+
+                _connection.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i > 0)
+                {
+                    msg = "Account updated successfully";
+                }
+                else
+                {
+                    msg = "Failed to Update the Account";
+                }
+            }
+
+            return Ok(msg);
+        }
+
+        [Route("DeleteAccount")]
+        [HttpPost]
+        public IHttpActionResult DeleteAccount(AccountsModel accountsModel)
+        {
+            string msg = "";
+            SqlCommand cmd = new SqlCommand("spDeleteUserAccount", _connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Id", accountsModel.Id);
+
+            _connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            if(i > 0) {
+                msg = "Account Has been deleted";
+            }
+            else
+            {
+                msg = "Error deleting the Account";
+            }
+
+            return Ok(msg);
+        }
 
     }
 }

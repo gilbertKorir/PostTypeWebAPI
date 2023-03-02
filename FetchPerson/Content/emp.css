@@ -9,10 +9,10 @@
     width:70px;
     height:70px;
 }
-#txtName, #txtKyc, #txtAge{
-    width:200px;
-    margin-top:5px;
+#txtName, #txtKyc, #txtAge, #txtIdAcc{
+    width: 200px;
+    margin-top: 5px;
     padding: 5px;
     border: 2px solid blue;
-    border-radius:5px;
+    border-radius: 5px;
 }

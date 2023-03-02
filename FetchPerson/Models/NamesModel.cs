@@ -5,11 +5,9 @@ using System.Web;
 
 namespace FetchPerson.Models
 {
-    public class AccountsModel
+    public class NamesModel
     {
         public int Id { get; set; }
-        public string AccountName { get; set; }
-        public string KycId { get; set; }
-        public int Active { get; set; }
+        public string Name { get; set; }
     }
 }
