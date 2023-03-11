@@ -81,6 +81,7 @@ function fetchData() {
 function editproduct(i) {
     $(".empId").show();
     $("#update").show();
+    $("#adding").hide();
 
     $("#txtName").val(EmpData[i].Name);
     $("#txtAge").val(EmpData[i].Age);

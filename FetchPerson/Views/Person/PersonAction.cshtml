@@ -1,58 +1,60 @@
 ﻿<link href="~/Content/emp.css" rel="stylesheet" />
 <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 
-<div class="row">
-    <h2>Fetching Api using Ajax Jquery and Js</h2>
+@*<div class="container">*@
+    <div class="row" id="employeespage">
+        <h2 style="font-family:'Monotype Corsiva';">TrafCo Group of Companies</h2>
 
-    <div class="col-md-2 empId">
-        Employee Id
-    </div>
-    <div class="col-md-10 empId">
-        <input id="txtId" type="text" placeholder="Employee Id"/>
-    </div> 
-     
-    <div class="col-md-2">
-        Name
-    </div> 
-    <div class="col-md-10">
-        <input id="txtName" type="text" placeholder="Employee name"/>
-    </div>
-    
-    <div class="col-md-2">
-        Age
-    </div>
-    <div class="col-md-10">
-        <input id="txtAge" type="number" placeholder="Employee Age"/>
-    </div>
-    
-    <div class="col-md-2">
-        Active Status
-    </div>
-    <div class="col-md-10">
-        <input id="txtActive" type="checkbox" />
-    </div>
+        <div class="col-md-3 empId">
+            Employee Id
+        </div>
+        <div class="col-md-7 empId">
+            <input id="txtId" type="number" placeholder="Employee Id" disabled/>
+        </div>
 
-    <div class="col-md-12">
-        <button class="btn btn-primary" style="margin-left:165px; margin-bottom:5px;" onclick="Add()">Add</button>
-       <button id="update" class="btn btn-success update" onclick="updateEmployee()" style="display: none; margin-bottom: 5px;">Update</button>
-       <a href="@Url.Action("AccountsAction", "Accounts")" class="btn btn-info" style="margin-bottom: 5px;">Add account </a>
+        <div class="col-md-3">
+            Name
+        </div>
+        <div class="col-md-7">
+            <input id="txtName" type="text" placeholder="Employee name" />
+        </div>
+
+        <div class="col-md-3">
+            Age
+        </div>
+        <div class="col-md-7">
+            <input id="txtAge" type="number" placeholder="Employee Age" />
+        </div>
+
+        <div class="col-md-3">
+            Active Status
+        </div>
+        <div class="col-md-6">
+            <input id="txtActive" type="checkbox" />
+        </div>
+
+        <div class="col-md-6">
+            <button id="adding" class="btn btn-primary" style="margin-left:240px; margin-bottom:5px;" onclick="Add()">Add</button>
+            <button id="update" class="btn btn-success update" onclick="updateEmployee()" style="margin-left: 240px; display: none; margin-bottom: 5px;">Update</button>
+            @*<a href="@Url.Action("AccountsAction", "Accounts")" class="btn btn-info" style="margin-bottom: 5px;">Add account </a>*@
+        </div>
+        <br />
+        <div class="col-md-12" style="height:250px; overflow:auto;">
+            <table class="table table-dark table-bordered table-striped table-responsive">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Employee Id</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Active</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
     </div>
-    <br />
-    <div class="col-md-12">
-        <table class="table table-dark table-bordered table-striped table-responsive">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Employee Id</th>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Active</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-        </table>
-    </div>
-</div>
+@*</div>*@
 
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>

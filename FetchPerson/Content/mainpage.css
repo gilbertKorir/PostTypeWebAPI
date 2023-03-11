@@ -1,0 +1,140 @@
+﻿#navpage {
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color: #30302d;
+    color: white;
+    justify-content: space-evenly;
+    height: 97vh;
+    font-size: 27px;
+    font-family: 'Monotype Corsiva';
+    font-weight: 200;
+}
+
+#logoimg {
+    height: 70px;
+    width: 70px;
+    border-radius: 35px;
+    margin-left: 30px;
+}
+
+.logo {
+    margin-top: 30px;
+}
+
+#subcontents {
+    margin-left: 20px;
+    margin-top: 10px;
+    padding: 24px;
+    justify-content: space-between;
+}
+
+    #subcontents img {
+        width: 30px;
+        height: 30px;
+        border-radius: 13px;
+    }
+
+    #subcontents div {
+        padding-bottom: 20px;
+    }
+
+    #subcontents span {
+        margin-left: 5px;
+    }
+
+    #subcontents a{
+        color:white;
+        text-decoration:none;
+    }
+
+        #subcontents span:hover {
+            box-shadow: inset 180px 0 0 0 #54b3d6;
+            color: white;
+            text-decoration:none;
+        }
+
+#pane {
+    margin-top: 10px;
+    height: 70px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    background-image: linear-gradient(to right, magenta, whitesmoke);
+    color: white;
+    font-family: 'Monotype Corsiva';
+}
+
+    #pane h3 {
+        font-size: 30px;
+        font-weight: 200;
+        padding-bottom: 10px;
+    }
+
+#paneuser {
+    margin-left: auto;
+}
+
+    #paneuser img {
+        height: 50px;
+        width: 50px;
+    }
+
+
+#items {
+    height: 70vh;
+    width: 100%;
+    /*overflow-y: scroll*/
+}
+
+#stats{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    padding-top:5px;
+}
+
+.box{
+    color: white;
+    font-family:'Monotype Corsiva';
+    font-weight:200;
+    font-size:34px;
+    height:100px;
+    width:250px;
+    border-radius:15px;
+    padding: 2px;
+}
+
+.select{
+    width:150px;
+    height:35px;
+    border:2px solid blue;
+    border-radius:5px;
+}
+#box1{
+    display:flex;
+    flex-direction:row;
+    float:left;
+    justify-content:space-between;
+}
+
+#box2 {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+#saveAccount{
+ margin-left:115px;
+   width:100px;
+    height:35px;
+}
+
+#transPage{
+    font-size:15px;
+    background-color:white;
+    border:2px solid blue;
+    height:78vh;
+    width:100%;
+}

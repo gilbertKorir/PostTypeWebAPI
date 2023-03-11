@@ -29,7 +29,7 @@ namespace ApiPerson.Controllers
             string msg = "";
             if(obj_person != null)
             {
-                SqlCommand cmd = new SqlCommand("spAddPerson", _connection);
+                SqlCommand cmd = new SqlCommand("spAddEmployee", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Name", obj_person.Name);
                 cmd.Parameters.AddWithValue("@Age", obj_person.Age);
@@ -57,7 +57,7 @@ namespace ApiPerson.Controllers
         public IHttpActionResult FetchPerson()
         {
             //string msg = "no data";
-            SqlDataAdapter da = new SqlDataAdapter("spGetAll", _connection);
+            SqlDataAdapter da = new SqlDataAdapter("spGetAllEmployees", _connection);
             da.SelectCommand.CommandType = CommandType.StoredProcedure;
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -94,7 +94,7 @@ namespace ApiPerson.Controllers
             string msg = "";
             if (person != null)
             {
-                SqlCommand cmd = new SqlCommand("spUpdate", _connection);
+                SqlCommand cmd = new SqlCommand("spUpdateEmployee", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Id", person.Id);
                 cmd.Parameters.AddWithValue("@Name", person.Name);
@@ -122,7 +122,7 @@ namespace ApiPerson.Controllers
         public IHttpActionResult DeletePerson(Person person)
         {
             string msg = "";
-            SqlCommand cmd = new SqlCommand("spDeletePerson", _connection);
+            SqlCommand cmd = new SqlCommand("spDeleteEmployee", _connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Id", person.Id);
 
@@ -158,6 +158,7 @@ namespace ApiPerson.Controllers
                 {
                     Person emp = new Person();
                     emp.Id = Convert.ToInt32(dt.Rows[i]["Id"].ToString());
+                    emp.Name = dt.Rows[i]["Name"].ToString();
                     lstPerson.Add(emp);
                 }
             }
@@ -186,7 +187,8 @@ namespace ApiPerson.Controllers
                 cmd.Parameters.AddWithValue("@Active", accountsModel.Active);
 
                 _connection.Open();
-                int i = cmd.ExecuteNonQuery();
+
+                 int i = cmd.ExecuteNonQuery();     
 
                 if (i > 0)
                 {
@@ -217,7 +219,7 @@ namespace ApiPerson.Controllers
                 {
                     AccountsModel acc = new AccountsModel();
                     acc.AccountName = dt.Rows[i]["AccountName"].ToString();
-                    acc.KycId = dt.Rows[i]["KycId"].ToString();
+                    acc.KycId = Convert.ToInt32(dt.Rows[i]["KycId"].ToString());
                     acc.Id = Convert.ToInt32(dt.Rows[i]["Id"].ToString());
                     acc.Active = Convert.ToInt32(dt.Rows[i]["Active"].ToString());
                     lstAccounts.Add(acc);
@@ -242,7 +244,7 @@ namespace ApiPerson.Controllers
             string msg = "";
             if(accountsModel != null)
             {
-                SqlCommand cmd = new SqlCommand("spUpdateUserAccount", _connection);
+                SqlCommand cmd = new SqlCommand("spUpdateAccount", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Id", accountsModel.Id);
                 cmd.Parameters.AddWithValue("@AccountName", accountsModel.AccountName);
@@ -270,7 +272,7 @@ namespace ApiPerson.Controllers
         public IHttpActionResult DeleteAccount(AccountsModel accountsModel)
         {
             string msg = "";
-            SqlCommand cmd = new SqlCommand("spDeleteUserAccount", _connection);
+            SqlCommand cmd = new SqlCommand("spDeleteAccount", _connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Id", accountsModel.Id);
 

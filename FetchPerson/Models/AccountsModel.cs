@@ -9,7 +9,7 @@ namespace FetchPerson.Models
     {
         public int Id { get; set; }
         public string AccountName { get; set; }
-        public string KycId { get; set; }
+        public int KycId { get; set; }
         public int Active { get; set; }
     }
 }

@@ -2,58 +2,60 @@
 <link href="~/Content/emp.css" rel="stylesheet" />
 <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 
-<div class="row"style="padding:4px; margin-top:10px;">
-    <h3 class="text-center">Individuals Account Names</h3>
+@*<div class="container">*@
+    <div class="row" id="accountspage">
+        <h3 style="font-family:'Monotype Corsiva';">Individuals Account Names</h3>
 
-    <div class="col-md-3 accId" style="display:none;">
-        Accounts Id
-    </div>
-    <div class="col-md-9 accId" style="display:none;">
-        <input id="txtIdAcc" style="display:none;" placeholder="Accounts id" type="number" disabled/>
-    </div>
-    
-    <div class="col-md-3">
-        Account Name
-    </div>
-    <div class="col-md-9">
-        <input id="txtName" placeholder="account Name" type="text"/>
-    </div>
-    
-    <div class="col-md-3">
-        KYCID
-    </div>
-    <div class="col-md-9">
-        <select id="txtKyc">
-            <option>--Select--</option>
-        </select>
-    </div>
-    
-    <div class="col-md-3">
-        Active Status
-    </div>
-    <div class="col-md-9">
-        <input id="txtActive" type="checkbox"/>
-    </div>
-    
-    <div class="col-md-12">
-        <button class="btn btn-primary" style="margin-left:280px; margin-bottom:5px;" onclick="addAccount()">Save</button>
-        <button id="updateAccount" class="btn btn-success" onclick="updateAccount()" style="display: none; margin-bottom: 5px;">update</button>
-    </div>
+        <div class="col-md-3 accId" style="display:none;">
+            Accounts Id
+        </div>
+        <div class="col-md-9 accId" style="display:none;">
+            <input id="txtIdAcc" style="display:none;" placeholder="Accounts id" type="number" disabled />
+        </div>
 
-    <div class="col-md-12">
-        <table class="table table-bordered table-striped table-responsive">
-            <thead>
-                <tr>
-                <th>Account Name</th>
-                <th>KycId</th>
-                <th>Active</th>
-                <th>Edit</th>
-                </tr>
-            </thead>
-            <tbody id="tbodyAccounts"></tbody>
-        </table>
+        <div class="col-md-3">
+            Account Name
+        </div>
+        <div class="col-md-9">
+            <input id="txtName" placeholder="account Name" type="text" />
+        </div>
+
+        <div class="col-md-3">
+            KYCID
+        </div>
+        <div class="col-md-9">
+            <select id="txtKyc">
+                <option value="">--Select--</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            Active Status
+        </div>
+        <div class="col-md-9">
+            <input id="txtActive" type="checkbox" />
+        </div>
+
+        <div class="col-md-12">
+            <button class="btn btn-primary" style="margin-left:240px; margin-bottom:5px;" onclick="addAccount()">Save</button>
+            <button id="updateAccount" class="btn btn-success" onclick="updateAccount()" style="display: none; margin-bottom: 5px;">update</button>
+        </div>
+
+        <div class="col-md-12" style="height:250px; overflow-y:auto;">
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>Account Name</th>
+                        <th>KycId</th>
+                        <th>Active</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyAccounts"></tbody>
+            </table>
+        </div>
     </div>
-</div>
+@*</div>*@
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/accounts.js"></script>

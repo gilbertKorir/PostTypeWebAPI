@@ -1,16 +1,88 @@
-﻿@{
-    ViewBag.Title = "Home";
-}
+﻿
+@*<link href="~/Content/mainpage.css" rel="stylesheet" />*@
+<link href="~/Content/mainpage.css" rel="stylesheet" />
 
-<link href="~/Content/emp.css" rel="stylesheet" />
-<link href="~/Content/homepage.css" rel="stylesheet" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3" id="navpage">
+            <div class="logo">
+                <img id="logoimg" src="~/Images/logo.jfif" /><span>TrafCo</span>
+            </div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <div id="subcontents">
+                <div>
+                    <a a href="@Url.Action("Index", "Home")"><img src="~/Images/home.png" /><span>Home</span></a>
+                </div>
+                <div>
+                    <a><img src="~/Images/employee.png" /> <span id="emp">Employees</span></a>
+                </div>
 
-<div class="container" id="home">
-    <a id="btnUser" href="@Url.Action("PersonAction", "Person")" class="btn btn-primary" style="width:120px; height:60px; text-align:center; font-size:20px;">User Page</a>
-    @*<a href="@Url.Action("PersonAction", "Person")" class="btn btn-primary">User Page</a>*@
+                <div>
+                    <a><img src="~/Images/account.png" /><span id="acc">Accounts</span></a>
+                </div>
+                <div>
+                    <a><img src="~/Images/transactions.png" /> <span id="transaction">Transactions</span></a>
+                </div>
+                <div>
+                    <a><img src="~/images/report.jpg" /> <span id="reports">Reports</span>
+                    </a>
+                </div>
 
+                <div style="margin-top:40px;">
+                    <hr />
+                    <img src="~/Images/settings.png" /> <span>settings</span>
+                </div>
+                <div>
+                    <img src="~/Images/lg.png" /> <span>Log out</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div id="pane">
+                <div>
+                    <h3>Dashboard</h3>
+                </div>
+                <div id="paneuser">
+                        <img src="~/Images/email.png" />
+                        <img src="~/Images/noti.png" />
+                        <img src="~/Images/profi.png" />
+                </div>
+            </div>
+            
+                <div id="items" style="height:480px;">
+                    <div id="stats">
+                        <div class="box"  style="background-color: #5c97f7;">
+                            <h3>Employees</h3>
+                            <p id="employeeCount">90</p>
+                        </div>
+                        <div class="box" style="background-color: #f78f2d;">
+                            <h3>Accounts</h3>
+                            <p>150</p>
+                        </div>
+                        <div class="box" style="background-color: #1ea106;">
+                            <h3>Transactions</h3>
+                            <p>1000</p>
+                        </div>
+                    </div>
+                    <div style="height:450px; width:100%; margin-top:10px;" class="text-center">
+                        <img style="height:370px; width:70%;" src="~/images/empgr.png" />
+                    </div>
+                </div>
+           
+
+            <footer id="foot" style="background-color: #2f3030; height: 35px; width: 100%; color: wheat; margin-top: 20px; ">
+                <p style="padding-top:10px;" class="text-center">&copy; G-Tech, @DateTime.Now.Year - TrafCo Group of companies</p>
+            </footer>
+        </div>
+    </div>
 </div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/mainpage.js"></script>
+
+
+
+
+
 
 

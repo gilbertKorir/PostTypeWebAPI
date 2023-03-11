@@ -15,7 +15,7 @@ function fetchNames() {
             var dropdown = "";
             for (let i = 0; i < names.length; i++) {
                 dropdown = dropdown +
-                    "<option>" + names[i].Id + "</option>";
+                    "<option value='"+ names[i].Id +"'>"+ names[i].Name + "</option>";
             }
             if (dropdown != null) {
                 $('#txtKyc').append(dropdown);

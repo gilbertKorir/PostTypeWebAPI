@@ -123,6 +123,7 @@
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
+    <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -137,14 +138,14 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\emp.css" />
-    <Content Include="Content\homepage.css" />
+    <Content Include="Content\mainpage.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="images\em.png" />
-    <Content Include="images\emp.png" />
-    <Content Include="images\logo.jfif" />
+    <Content Include="images\empg.jpg" />
+    <Content Include="images\empgr.png" />
+    <Content Include="images\report.jpg" />
     <Content Include="Scripts\accounts.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -158,6 +159,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\mainpage.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\person.js" />
     <Content Include="Web.config" />
@@ -176,9 +178,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Person\PersonAction.cshtml" />
     <Content Include="Views\Accounts\AccountsAction.cshtml" />
+    <Content Include="Views\Transactions\TransactionsAction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
