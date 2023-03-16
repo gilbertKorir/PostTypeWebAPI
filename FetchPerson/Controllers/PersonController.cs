@@ -63,7 +63,6 @@ namespace FetchPerson.Controllers
         {
             var content = new StringContent(JsonConvert.SerializeObject(person), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:44368/api/person/edit", content);
-
             if (response.IsSuccessStatusCode)
             {
                 return Json(new { success = true });

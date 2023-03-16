@@ -1,7 +1,9 @@
 ﻿using ApiPerson.Models;
 using Newtonsoft.Json;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,8 +11,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Lifetime;
+using System.Security.Principal;
 using System.Text;
+using System.Web.DynamicData;
 using System.Web.Http;
+using System.Xml.Linq;
 
 namespace ApiPerson.Controllers
 {
@@ -27,7 +33,7 @@ namespace ApiPerson.Controllers
         {
             //string json;
             string msg = "";
-            if(obj_person != null)
+            if (obj_person != null)
             {
                 SqlCommand cmd = new SqlCommand("spAddEmployee", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -48,10 +54,10 @@ namespace ApiPerson.Controllers
                     msg = "Something is wring ";
                 }
             }
-           
+
             return Ok(msg);
-        } 
-        
+        }
+
         [Route("Fetch")]
         [HttpGet]
         public IHttpActionResult FetchPerson()
@@ -82,11 +88,11 @@ namespace ApiPerson.Controllers
             else
             {
                 return null;
-                
+
             }
-            
+
         }
-        
+
         [Route("Edit")]
         [HttpPost]
         public IHttpActionResult EditPerson(Person person)
@@ -115,8 +121,8 @@ namespace ApiPerson.Controllers
             }
             return Ok(msg);
         }
-         
-        
+
+
         [Route("Delete")]
         [HttpPost]
         public IHttpActionResult DeletePerson(Person person)
@@ -143,7 +149,7 @@ namespace ApiPerson.Controllers
 
         [Route("GetIds")]
         [HttpGet]
-        public IHttpActionResult FetchName()
+        public IHttpActionResult FetchIds()
         {
             //string msg = "no data";
             SqlDataAdapter da = new SqlDataAdapter("spGetIds", _connection);
@@ -174,11 +180,46 @@ namespace ApiPerson.Controllers
 
         }
 
+        //getting kycid
+        [Route("GetKycIds")]
+        [HttpGet]
+        public IHttpActionResult FetchKycid()
+        {
+            // string msg = "no data";
+            SqlDataAdapter da = new SqlDataAdapter("spGetKycid", _connection);
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+
+            List<AccountsModel> lstPerson = new List<AccountsModel>();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    AccountsModel account = new AccountsModel();
+                    account.KycId = Convert.ToInt32(dt.Rows[i]["KycId"].ToString());
+                    lstPerson.Add(account);
+                }
+            }
+            if (lstPerson.Count > 0)
+            {
+                return Json(lstPerson);
+            }
+            else
+            {
+                return null;
+
+            }
+
+        }
+
+
         [Route("AddAccount")]
         [HttpPost]
-        public IHttpActionResult AddAccount(AccountsModel accountsModel) {
+        public IHttpActionResult AddAccount(AccountsModel accountsModel)
+        {
             string msg = "";
-            if(accountsModel != null)
+            if (accountsModel != null)
             {
                 SqlCommand cmd = new SqlCommand("spAddAccount", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -188,7 +229,7 @@ namespace ApiPerson.Controllers
 
                 _connection.Open();
 
-                 int i = cmd.ExecuteNonQuery();     
+                int i = cmd.ExecuteNonQuery();
 
                 if (i > 0)
                 {
@@ -204,7 +245,7 @@ namespace ApiPerson.Controllers
 
         [Route("FetchAccount")]
         [HttpGet]
-       public IHttpActionResult GetAccounts()
+        public IHttpActionResult GetAccounts()
         {
             string msg = "";
             SqlDataAdapter da = new SqlDataAdapter("spGetAccounts", _connection);
@@ -213,9 +254,9 @@ namespace ApiPerson.Controllers
             da.Fill(dt);
 
             List<AccountsModel> lstAccounts = new List<AccountsModel>();
-            if(dt.Rows.Count > 0)
+            if (dt.Rows.Count > 0)
             {
-                for(int i = 0; i < dt.Rows.Count; i++)
+                for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     AccountsModel acc = new AccountsModel();
                     acc.AccountName = dt.Rows[i]["AccountName"].ToString();
@@ -225,7 +266,7 @@ namespace ApiPerson.Controllers
                     lstAccounts.Add(acc);
                 }
 
-                if(lstAccounts.Count> 0)
+                if (lstAccounts.Count > 0)
                 {
                     return Ok(lstAccounts);
                 }
@@ -242,7 +283,7 @@ namespace ApiPerson.Controllers
         public IHttpActionResult UpdateAccounts(AccountsModel accountsModel)
         {
             string msg = "";
-            if(accountsModel != null)
+            if (accountsModel != null)
             {
                 SqlCommand cmd = new SqlCommand("spUpdateAccount", _connection);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -278,7 +319,8 @@ namespace ApiPerson.Controllers
 
             _connection.Open();
             int i = cmd.ExecuteNonQuery();
-            if(i > 0) {
+            if (i > 0)
+            {
                 msg = "Account Has been deleted";
             }
             else
@@ -289,7 +331,151 @@ namespace ApiPerson.Controllers
             return Ok(msg);
         }
 
+
+
+        [Route("FetchAccNames")]
+        [HttpGet]
+        public IHttpActionResult FetchAccName(AccountsModel accounts)
+        {
+
+            using (SqlConnection connection = new SqlConnection(_conn))
+            {
+                SqlCommand command = new SqlCommand("spSelectAccounts", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@KycId", accounts.KycId);
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                List<AccountsModel> items = new List<AccountsModel>();
+
+
+                while (reader.Read())
+                {
+                    AccountsModel item = new AccountsModel();
+                    // item.KycId = Convert.ToInt32(reader["KycId"].ToString());
+                    item.Id = Convert.ToInt32(reader["Id"].ToString());
+                    item.AccountName = reader["AccountName"].ToString();
+                    items.Add(item);
+                }
+
+                return Json(items);
+            }
+        }
+
+        [Route("Accsd/{id}")]
+        [HttpGet]
+        public IHttpActionResult GetAccounts(int id)
+        {
+            List<AccountsModel> accounts = new List<AccountsModel>();
+
+            using (SqlConnection con = new SqlConnection(_conn))
+            {
+                using (SqlCommand cmd = new SqlCommand("spSelectAccounts", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@KycId", id);
+
+                    con.Open();
+
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            var account = new AccountsModel
+                            {
+                                Id = rdr.GetInt32(0),
+                                AccountName = rdr.GetString(1)
+                            };
+                            accounts.Add(account);
+                        }
+                    }
+                }
+            }
+            return Json(accounts);
+        }
+
+
+        //TRANSACTIONS
+
+        [HttpPost]
+        [Route("AddTransaction")]
+        public IHttpActionResult AddTransation(Transactions transactions)
+        {
+            string msg = "";
+            if(transactions != null)
+            {
+                SqlCommand cmd = new SqlCommand("spAddtransactions", _connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TransId", transactions.TransId);
+                cmd.Parameters.AddWithValue("@AccountNo", transactions.AccountNo);
+                cmd.Parameters.AddWithValue("@Type", transactions.Type);
+                cmd.Parameters.AddWithValue("@TransDate", transactions.TransDate);
+                cmd.Parameters.AddWithValue("@Amount", transactions.Amount);
+
+                _connection.Open();
+                int i = cmd.ExecuteNonQuery();
+
+                if (i > 0)
+                {
+                    msg = "Transaction done successfully";
+
+                }
+                else
+                {
+                    msg = "Transaction failed";
+                }
+            }
+
+            return Ok(msg);
+        }
+
+
+        //fetch transactions
+        [Route("FetchTransactions")]
+        [HttpGet]
+        public IHttpActionResult FetchTransactions()
+        {
+            string msg = "";
+            SqlDataAdapter da = new SqlDataAdapter("spSelectTransactions", _connection);
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+
+            List<Transactions> transactions = new List<Transactions>();
+            if (dt.Rows.Count > 0)
+            {
+                dt.Columns["TransDate"].DataType = typeof(DateTime);
+                for (int i = 0; i<dt.Rows.Count; i++)
+                {
+                    Transactions transaction = new Transactions();
+                    transaction.TransId = Convert.ToInt32(dt.Rows[i]["TransId"].ToString());
+                    transaction.AccountNo = Convert.ToInt32(dt.Rows[i]["AccountNo"].ToString());
+                    transaction.Type = dt.Rows[i]["Type"].ToString();
+
+                    DateTime dateValue = Convert.ToDateTime(dt.Rows[i]["TransDate"]);
+                    transaction.TransDate = dateValue.ToString("yyyy-MM-dd");
+
+                    //transaction.TransDate = dt.Rows[i]["TransDate"].ToString();
+                    transaction.Amount = Convert.ToDouble(dt.Rows[i]["Amount"].ToString());
+
+                    transactions.Add(transaction);
+                }
+               if(transactions.Count > 0)
+                {    
+                    msg = "successfully fetched the transactions";
+                    return Ok(transactions);
+                }
+                else
+                {
+                    msg = "Failed to fetch any transaction done";
+                }
+            }
+
+            return Ok(msg);
+        }
     }
+            
 }
 
 
@@ -321,43 +507,7 @@ namespace ApiPerson.Controllers
 
 
 
-/*[Route("Find")]
-[HttpPost]
-public IHttpActionResult GetById(Person person)
-{
-    using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["conn"].ConnectionString))
-    {
-        connection.Open();
 
-        using (var command = new SqlCommand("spFindById", connection))
-        {
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@Id", person.Id);
-
-            using (var reader = command.ExecuteReader())
-            {
-                if (reader.Read())
-                {
-                    // Maping the record to your model class
-                    var record = new Person()
-                    {
-                        Id = (int)reader["Id"],
-                        Name = reader["Name"].ToString(),
-                        Age = (int)reader["Age"],
-                        Active = (int)reader["Active"]
-
-                    };
-
-                    return Ok(record);
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-        }
-    }
-}*/
 
 
 

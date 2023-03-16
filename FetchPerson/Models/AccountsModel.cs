@@ -5,6 +5,10 @@ using System.Web;
 
 namespace FetchPerson.Models
 {
+    public class AccountsModelR
+    {
+        public int KycId { get; set; } 
+    }
     public class AccountsModel
     {
         public int Id { get; set; }

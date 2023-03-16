@@ -127,9 +127,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountNames.cs" />
     <Compile Include="Models\AccountsModel.cs" />
     <Compile Include="Models\NamesModel.cs" />
     <Compile Include="Models\PersonModel.cs" />
+    <Compile Include="Models\Transactions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +148,7 @@
     <Content Include="images\empg.jpg" />
     <Content Include="images\empgr.png" />
     <Content Include="images\report.jpg" />
+    <Content Include="images\tick.jpg" />
     <Content Include="Scripts\accounts.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -162,6 +165,7 @@
     <Content Include="Scripts\mainpage.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\person.js" />
+    <Content Include="Scripts\transaction.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

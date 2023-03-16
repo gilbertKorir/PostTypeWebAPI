@@ -138,3 +138,16 @@
     height:78vh;
     width:100%;
 }
+
+.popup {
+    z-index:100;
+    position: fixed;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    display: none;
+    border-radius:10px;
+    background-color: #fff;
+    border: 2px solid blue;
+    padding: 20px;
+}

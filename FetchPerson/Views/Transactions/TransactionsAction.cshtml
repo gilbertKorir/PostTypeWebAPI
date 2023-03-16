@@ -2,19 +2,23 @@
 <link href="~/Content/mainpage.css" rel="stylesheet" />
 
 <div class="container" id="transPage">
-    <h2 style="font-family:'Monotype Corsiva'; font-size:30px;">TransactionsAction</h2>
+    <h2 style="font-family:'Monotype Corsiva'; font-size:30px;">Respective Transactions Done</h2>
     <div class="row">
         <div class="col-sm-10" id="box1">
             <div>
-                <span>Person</span> : <select class="select"><option>--select--</option></select>
+                <span>Person</span> : <select id="txtKycid" class="select"><option>--select--</option></select>
             </div>
 
             <div>
-                <span>Account No</span> : <select class="select"><option>--select--</option></select>
+                <span>Account No</span> : <select id="accNm" class="select"></select>
             </div>
 
             <div>
-                <span>Type</span> : <select class="select"><option>--select--</option></select>
+                <span>Type</span> : <select id="type" class="select">
+                    <option>--select--</option>
+                    <option>Deposit</option>
+                    <option>Withdrawal</option>
+                </select>
             </div>
         </div>
     </div>
@@ -22,21 +26,42 @@
     <div class="row">
         <div class="col-sm-10" id="box2">
             <div>
-                <span>Date</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <input class="select" type="date" />
+                <span>Date</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <input id="date" class="select" type="date" />
             </div>
-      
+
             <div style="margin-left: 85px">
-                <span>Amount</span> : <input class="select" type="number" />
+                <span>Amount</span> : <input id="amount" class="select" type="number" />
             </div>
-          
+
             <div>
-                <button class="btn btn-primary" id="saveAccount">Save</button>
+                <button class="btn btn-primary" id="saveAccount" onclick="addTransaction()">Save</button>
             </div>
         </div>
+
     </div>
-  
+    <div id="popupBox" class="popup">
+        <p class="text-center"><img  src="~/images/tick.jpg" style="height:40px; width:40px;"/></p>
+        <p class="text-center">Transaction Added successfully.</p>
+        <p class="text-center"><button class="btn btn-success" onclick="hidePopup()">Ok</button></p>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="margin-top:10px; height:280px; overflow:auto; z-index:1;">
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>Transaction Id</th>
+                        <th>Account No Id</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="tTrans"></tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<script src="~/Scripts/accounts.js"></script>
+<script src="~/Scripts/transaction.js"></script>

@@ -91,6 +91,7 @@ function addAccount() {
 
 function editAccount(i) {
     $(".accId").show();
+    $("#addAcc").hide();
     $("#txtIdAcc").show();
     $("#updateAccount").show();
     $("#txtName").val(AccountsData[i].AccountName);

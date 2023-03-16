@@ -32,7 +32,7 @@ namespace FetchPerson.Controllers
         }
 
 
-        [HttpPost]
+       /* [HttpPost]
         public ActionResult GetAllEmployees()
         {
            
@@ -44,7 +44,7 @@ namespace FetchPerson.Controllers
                 _persons = JsonConvert.DeserializeObject<List<PersonModel>>(res);
             }
             return Json(_persons);
-        }
+        }*/
 
     }
 }
