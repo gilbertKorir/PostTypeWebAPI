@@ -397,37 +397,53 @@ namespace ApiPerson.Controllers
 
 
         //TRANSACTIONS
-
         [HttpPost]
         [Route("AddTransaction")]
         public IHttpActionResult AddTransation(Transactions transactions)
         {
             string msg = "";
-            if(transactions != null)
-            {
-                SqlCommand cmd = new SqlCommand("spAddtransactions", _connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@TransId", transactions.TransId);
-                cmd.Parameters.AddWithValue("@AccountNo", transactions.AccountNo);
-                cmd.Parameters.AddWithValue("@Type", transactions.Type);
-                cmd.Parameters.AddWithValue("@TransDate", transactions.TransDate);
-                cmd.Parameters.AddWithValue("@Amount", transactions.Amount);
+                if (transactions != null)
+                {
+                    SqlCommand cmd = new SqlCommand("spAddtransactions", _connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TransId", transactions.TransId);
+                    cmd.Parameters.AddWithValue("@AccountNo", transactions.AccountNo);
+                    cmd.Parameters.AddWithValue("@Type", transactions.Type);
+                    cmd.Parameters.AddWithValue("@TransDate", transactions.TransDate);
+                    cmd.Parameters.AddWithValue("@Amount", transactions.Amount);
 
                 _connection.Open();
                 int i = cmd.ExecuteNonQuery();
-
                 if (i > 0)
                 {
-                    msg = "Transaction done successfully";
-
+                    msg = "Account Has been deleted";
                 }
                 else
                 {
-                    msg = "Transaction failed";
+                    msg = "Error deleting the Account";
                 }
-            }
 
-            return Ok(msg);
+                /*  DataTable dt = new DataTable();
+                  using (SqlDataAdapter da = new SqlDataAdapter())
+                  {
+                      da.SelectCommand = new SqlCommand("spAddtransactions", _connection);
+                      da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                      da.SelectCommand.Parameters.AddWithValue("Amount", transactions.Amount);
+                      da.Fill(dt);
+                  }
+
+                  if (dt.Rows.Count == 0)
+                  {
+                      // There was an error with the stored procedure
+                      return InternalServerError(new Exception("Error message goes here."));
+                  }
+                  else
+                  {
+                      return Ok(dt);
+                  }*/
+            }
+                return Ok(msg);
+         
         }
 
 
@@ -445,8 +461,8 @@ namespace ApiPerson.Controllers
             List<Transactions> transactions = new List<Transactions>();
             if (dt.Rows.Count > 0)
             {
-                dt.Columns["TransDate"].DataType = typeof(DateTime);
-                for (int i = 0; i<dt.Rows.Count; i++)
+                // dt.Columns["TransDate"].DataType = typeof(DateTime);
+                for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Transactions transaction = new Transactions();
                     transaction.TransId = Convert.ToInt32(dt.Rows[i]["TransId"].ToString());
@@ -456,13 +472,11 @@ namespace ApiPerson.Controllers
                     DateTime dateValue = Convert.ToDateTime(dt.Rows[i]["TransDate"]);
                     transaction.TransDate = dateValue.ToString("yyyy-MM-dd");
 
-                    //transaction.TransDate = dt.Rows[i]["TransDate"].ToString();
                     transaction.Amount = Convert.ToDouble(dt.Rows[i]["Amount"].ToString());
-
                     transactions.Add(transaction);
                 }
-               if(transactions.Count > 0)
-                {    
+                if (transactions.Count > 0)
+                {
                     msg = "successfully fetched the transactions";
                     return Ok(transactions);
                 }
@@ -475,7 +489,7 @@ namespace ApiPerson.Controllers
             return Ok(msg);
         }
     }
-            
+
 }
 
 

@@ -69,15 +69,23 @@ function addTransaction() {
             showPopup();
             clearFields();
             fetchTransactions();
-            //alert("successfully added the transaction");
+            
+            
         },
-        error: function (msg) {
-            alert("cannot add the transaction");
+        error: function (jqXHR, textStatus, errorThrown) {
+            //if (jqXHR.status === 400 && jqXHR.responseText === 'Withdrawal amount exceeds total deposit.') {
+                // Handle withdrawal exceeds total deposit error
+                alert('Withdrawal amount exceeds total deposit.');
+            //}
+           // else {
+               // alert("An error occured");
+            //}
         }
 
     });
+}
 
-} function fetchTransactions() {
+function fetchTransactions() {
     $.ajax({
         url: "/Transactions/GetTransaction",
         type: "POST",
