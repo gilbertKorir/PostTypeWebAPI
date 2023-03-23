@@ -20,7 +20,7 @@
                 }
             },
             error: function (xhr, status, error) {
-                console.log("Error: " + error);
+                alert("Error: " + error);
             }
         });
     });
@@ -53,7 +53,7 @@ function getAllKycid() {
 function addTransaction() {
     var obj = {};
 
-  /*  obj.TransId = $("#txtKycid").val();*/
+    /*  obj.TransId = $("#txtKycid").val();*/
     obj.AccountNo = $("#accNm").val();
     obj.Type = $("#type").val();
     obj.TransDate = $("#date").val();
@@ -66,20 +66,20 @@ function addTransaction() {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(obj),
         success: function (response) {
-            showPopup();
+
+            alert(response);
             clearFields();
             fetchTransactions();
-            
-            
+
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            //if (jqXHR.status === 400 && jqXHR.responseText === 'Withdrawal amount exceeds total deposit.') {
+            if (errorThrown == 'Withdrawal amount exceeds total deposit.') {
                 // Handle withdrawal exceeds total deposit error
                 alert('Withdrawal amount exceeds total deposit.');
-            //}
-           // else {
-               // alert("An error occured");
-            //}
+            }
+            else {
+                alert("An error occured");
+            }
         }
 
     });
@@ -91,7 +91,7 @@ function fetchTransactions() {
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function (response) { 
+        success: function (response) {
             var dropdown = "";
             $("#tTrans").html('');
             for (let i = 0; i < response.length; i++) {

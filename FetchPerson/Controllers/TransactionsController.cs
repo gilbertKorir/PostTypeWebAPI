@@ -2,7 +2,10 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Principal;
@@ -62,11 +65,41 @@ namespace FetchPerson.Controllers
         [HttpPost]
         public ActionResult AddTransaction(Transactions transactions)
         {
-            var content = new StringContent(JsonConvert.SerializeObject(transactions), Encoding.UTF8, "application/json");
-            var response = client.PostAsync("https://localhost:44368/api/person/addtransaction", content);
+            string myAPI = "https://localhost:44368/api/person/addtransaction";
+            string strPayLoad = JsonConvert.SerializeObject(transactions);
+            string response = "";
 
-            return Json(transactions);
-        }
+            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(myAPI);
+            client.Method = "POST";
+            client.ContentType = "application/json";
+            client.ContentLength = strPayLoad.Length;
+            client.Timeout = 600000;
+            using (Stream webStream = client.GetRequestStream())
+            using (StreamWriter requestWriter = new StreamWriter(webStream, Encoding.ASCII))
+            {
+                requestWriter.Write(strPayLoad);
+            }
+
+            try
+            {
+                WebResponse webResponse = client.GetResponse();
+                using (Stream webStream = webResponse.GetResponseStream())
+                {
+                    if (webStream != null)
+                    {
+                        using (StreamReader responseReader = new StreamReader(webStream))
+                        {
+                            response = responseReader.ReadToEnd();
+                        }
+                    }
+                } 
+
+                return Json(response); 
+            }catch{
+                return null;
+            }
+            }
+           
           
         
         //fetch all transactions

@@ -404,24 +404,24 @@ namespace ApiPerson.Controllers
             string msg = "";
                 if (transactions != null)
                 {
-                    SqlCommand cmd = new SqlCommand("spAddtransactions", _connection);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                   // cmd.Parameters.AddWithValue("@TransId", transactions.TransId);
-                    cmd.Parameters.AddWithValue("@AccountNo", transactions.AccountNo);
-                    cmd.Parameters.AddWithValue("@Type", transactions.Type);
-                    cmd.Parameters.AddWithValue("@TransDate", transactions.TransDate);
-                    cmd.Parameters.AddWithValue("@Amount", transactions.Amount);
+                //    SqlCommand cmd = new SqlCommand("spAddtransactions", _connection);
+                //    cmd.CommandType = CommandType.StoredProcedure;
+                //   // cmd.Parameters.AddWithValue("@TransId", transactions.TransId);
+                //    cmd.Parameters.AddWithValue("@AccountNo", transactions.AccountNo);
+                //    cmd.Parameters.AddWithValue("@Type", transactions.Type);
+                //    cmd.Parameters.AddWithValue("@TransDate", transactions.TransDate);
+                //    cmd.Parameters.AddWithValue("@Amount", transactions.Amount);
 
-                _connection.Open();
-                int i = cmd.ExecuteNonQuery();
-                if (i > 0)
-                {
-                    msg = "Transaction Done successfully";
-                }
-                else
-                {
-                    msg = "Cannot perform the transaction";
-                }
+                //_connection.Open();
+                //int i = cmd.ExecuteNonQuery();
+                //if (i > 0)
+                //{
+                //    msg = "Transaction Done successfully";
+                //}
+                //else
+                //{
+                //    msg = "Cannot perform the transaction";
+                //}
 
                   DataTable dt = new DataTable();
                   using (SqlDataAdapter da = new SqlDataAdapter())
@@ -429,18 +429,23 @@ namespace ApiPerson.Controllers
                       da.SelectCommand = new SqlCommand("spAddtransactions", _connection);
                       da.SelectCommand.CommandType = CommandType.StoredProcedure;
                       da.SelectCommand.Parameters.AddWithValue("Amount", transactions.Amount);
-                      da.Fill(dt);
+                      da.SelectCommand.Parameters.AddWithValue("AccountNo", transactions.AccountNo);
+                      da.SelectCommand.Parameters.AddWithValue("Type", transactions.Type);
+                      da.SelectCommand.Parameters.AddWithValue("TransDate", transactions.TransDate);
+
+                    da.Fill(dt);
                   }
 
-                  if (dt.Rows.Count == 0)
-                  {
-                      // There was an error with the stored procedure
-                      return InternalServerError(new Exception("Error message goes here."));
-                  }
-                  else
-                  {
-                      return Ok(dt);
-                  }
+                return Json(dt);
+                 //if (dt.Rows.Count == 0)
+                 // {
+                 //     // There was an error with the stored procedure
+                 //     return InternalServerError(new Exception("Error message goes here."));
+                 // }
+                 // else
+                 // {
+                 //     return Ok(dt);
+                 // }
             }
                 return Ok(msg);
          
