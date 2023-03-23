@@ -406,7 +406,7 @@ namespace ApiPerson.Controllers
                 {
                     SqlCommand cmd = new SqlCommand("spAddtransactions", _connection);
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@TransId", transactions.TransId);
+                   // cmd.Parameters.AddWithValue("@TransId", transactions.TransId);
                     cmd.Parameters.AddWithValue("@AccountNo", transactions.AccountNo);
                     cmd.Parameters.AddWithValue("@Type", transactions.Type);
                     cmd.Parameters.AddWithValue("@TransDate", transactions.TransDate);
@@ -416,14 +416,14 @@ namespace ApiPerson.Controllers
                 int i = cmd.ExecuteNonQuery();
                 if (i > 0)
                 {
-                    msg = "Account Has been deleted";
+                    msg = "Transaction Done successfully";
                 }
                 else
                 {
-                    msg = "Error deleting the Account";
+                    msg = "Cannot perform the transaction";
                 }
 
-                /*  DataTable dt = new DataTable();
+                  DataTable dt = new DataTable();
                   using (SqlDataAdapter da = new SqlDataAdapter())
                   {
                       da.SelectCommand = new SqlCommand("spAddtransactions", _connection);
@@ -440,7 +440,7 @@ namespace ApiPerson.Controllers
                   else
                   {
                       return Ok(dt);
-                  }*/
+                  }
             }
                 return Ok(msg);
          
@@ -465,7 +465,7 @@ namespace ApiPerson.Controllers
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Transactions transaction = new Transactions();
-                    transaction.TransId = Convert.ToInt32(dt.Rows[i]["TransId"].ToString());
+                   // transaction.TransId = Convert.ToInt32(dt.Rows[i]["TransId"].ToString());
                     transaction.AccountNo = Convert.ToInt32(dt.Rows[i]["AccountNo"].ToString());
                     transaction.Type = dt.Rows[i]["Type"].ToString();
 

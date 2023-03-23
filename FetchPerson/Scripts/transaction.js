@@ -53,7 +53,7 @@ function getAllKycid() {
 function addTransaction() {
     var obj = {};
 
-    obj.TransId = $("#txtKycid").val();
+  /*  obj.TransId = $("#txtKycid").val();*/
     obj.AccountNo = $("#accNm").val();
     obj.Type = $("#type").val();
     obj.TransDate = $("#date").val();
@@ -97,7 +97,7 @@ function fetchTransactions() {
             for (let i = 0; i < response.length; i++) {
                 dropdown = dropdown
                     + "<tr>"
-                    + "<td>" + response[i].TransId + "</td>"
+                    //+ "<td>" + response[i].TransId + "</td>"
                     + "<td>" + response[i].AccountNo + "</td>"
                     + "<td>" + response[i].Type + "</td>"
                     + "<td>" + response[i].TransDate + "</td>"
