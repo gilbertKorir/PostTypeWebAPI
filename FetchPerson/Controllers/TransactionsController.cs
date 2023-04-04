@@ -100,8 +100,6 @@ namespace FetchPerson.Controllers
             }
             }
            
-          
-        
         //fetch all transactions
         [HttpPost]
         public ActionResult GetTransaction()
@@ -115,6 +113,24 @@ namespace FetchPerson.Controllers
                 _transactions = JsonConvert.DeserializeObject<List<Transactions>>(responseData);
             }
             return Json(_transactions);
+        }
+
+        //getCurrent balance
+        [HttpPost]
+        public ActionResult CurrentBalance(int id)
+        {
+            string msg = "";
+            using (HttpClient client = new HttpClient())
+            {
+                string url = $"https://localhost:44368/api/person/balance/{id}";
+                HttpResponseMessage response = client.GetAsync(url).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseData = response.Content.ReadAsStringAsync().Result;
+                    return Json(responseData);
+                }
+            }
+            return Json(msg);
         }
 
     }

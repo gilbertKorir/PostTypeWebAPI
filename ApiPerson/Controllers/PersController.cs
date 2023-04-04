@@ -404,25 +404,6 @@ namespace ApiPerson.Controllers
             string msg = "";
                 if (transactions != null)
                 {
-                //    SqlCommand cmd = new SqlCommand("spAddtransactions", _connection);
-                //    cmd.CommandType = CommandType.StoredProcedure;
-                //   // cmd.Parameters.AddWithValue("@TransId", transactions.TransId);
-                //    cmd.Parameters.AddWithValue("@AccountNo", transactions.AccountNo);
-                //    cmd.Parameters.AddWithValue("@Type", transactions.Type);
-                //    cmd.Parameters.AddWithValue("@TransDate", transactions.TransDate);
-                //    cmd.Parameters.AddWithValue("@Amount", transactions.Amount);
-
-                //_connection.Open();
-                //int i = cmd.ExecuteNonQuery();
-                //if (i > 0)
-                //{
-                //    msg = "Transaction Done successfully";
-                //}
-                //else
-                //{
-                //    msg = "Cannot perform the transaction";
-                //}
-
                   DataTable dt = new DataTable();
                   using (SqlDataAdapter da = new SqlDataAdapter())
                   {
@@ -435,17 +416,7 @@ namespace ApiPerson.Controllers
 
                     da.Fill(dt);
                   }
-
                 return Json(dt);
-                 //if (dt.Rows.Count == 0)
-                 // {
-                 //     // There was an error with the stored procedure
-                 //     return InternalServerError(new Exception("Error message goes here."));
-                 // }
-                 // else
-                 // {
-                 //     return Ok(dt);
-                 // }
             }
                 return Ok(msg);
          
@@ -466,18 +437,16 @@ namespace ApiPerson.Controllers
             List<Transactions> transactions = new List<Transactions>();
             if (dt.Rows.Count > 0)
             {
-                // dt.Columns["TransDate"].DataType = typeof(DateTime);
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Transactions transaction = new Transactions();
-                   // transaction.TransId = Convert.ToInt32(dt.Rows[i]["TransId"].ToString());
                     transaction.AccountNo = Convert.ToInt32(dt.Rows[i]["AccountNo"].ToString());
                     transaction.Type = dt.Rows[i]["Type"].ToString();
 
                     DateTime dateValue = Convert.ToDateTime(dt.Rows[i]["TransDate"]);
                     transaction.TransDate = dateValue.ToString("yyyy-MM-dd");
 
-                    transaction.Amount = Convert.ToDouble(dt.Rows[i]["Amount"].ToString());
+                    transaction.Amount = Convert.ToDecimal(dt.Rows[i]["Amount"].ToString());
                     transactions.Add(transaction);
                 }
                 if (transactions.Count > 0)
@@ -491,7 +460,64 @@ namespace ApiPerson.Controllers
                 }
             }
 
-            return Ok(msg);
+            return Json(msg);
+        }
+
+        [Route("balance/{id}")]
+        [HttpGet]
+        public IHttpActionResult GetCurrentBalance(int id)
+        {
+            decimal currentBal;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_conn))
+                {
+                    using (SqlCommand command = new SqlCommand("spCurrentBalance", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@AccountNo", id);
+
+                        connection.Open();
+                        currentBal = (decimal)command.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+          
+            return Ok(currentBal);
+        }
+
+        //get statements
+        //[Route("GetStatement/{id}/{startDate}/{endDate}")]
+        [Route("GetStatement/{id}/{startDate}/{endDate}")]
+        [HttpGet]
+        public IHttpActionResult GetStatement(int id, DateTime startDate, DateTime endDate)
+        {
+
+            using (SqlConnection connection = new SqlConnection(_conn))
+            {
+                SqlCommand command = new SqlCommand("GetCashStatement", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@AccountNo", id);
+                command.Parameters.AddWithValue("@startDate",startDate);
+                command.Parameters.AddWithValue("@endDate", endDate);
+
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    //hold the results
+                    DataTable dataTable = new DataTable();
+                    dataTable.Load(reader);
+
+                    // Return JSON response
+                    return Ok(dataTable);
+                }
+            }
         }
     }
 

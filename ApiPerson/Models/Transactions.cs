@@ -12,6 +12,6 @@ namespace ApiPerson.Models
         public int AccountNo { get; set; }
         public string Type { get; set; }
         public string TransDate { get; set; }
-        public double Amount { get; set; }
+        public Decimal Amount { get; set; }
     }
 }

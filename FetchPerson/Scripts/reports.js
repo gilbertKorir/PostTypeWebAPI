@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     getAllKycid();
-    fetchTransactions();
+    //fetchTransactions();
 
     //populate
 
@@ -14,7 +14,7 @@
                 var dropdown = "<option value=''> --select-- </option>";
                 $("#accNm").empty();
                 for (var i = 0; i < data.length; i++) {
-                   /* $dropdown.append("<option value='" + data[i].Id + "'>" + data[i].AccountName + "</option>");*/
+                    /* $dropdown.append("<option value='" + data[i].Id + "'>" + data[i].AccountName + "</option>");*/
                     dropdown = dropdown + "<option value='" + data[i].Id + "'>" + data[i].AccountName + "</option>";
                 }
                 if (dropdown != null) {
@@ -28,7 +28,7 @@
     });
 
     //get currrent balance
-    $('#accNm').change(function () {
+  /*  $('#accNm').change(function () {
         var id = $("#accNm").val();
         $.ajax({
             url: "/Transactions/CurrentBalance/" + id,
@@ -36,7 +36,7 @@
             dataType: "json",
             success: function (response) {
                 if (response) {
-                   // alert(response);
+                    // alert(response);
                     $("#bal").val(response);
                 }
                 else {
@@ -45,12 +45,12 @@
                 //alert("The current balance for this account is :" + response);
             },
             error: function (xhr, status, error) {
-                alert("Current balance for the account is 0");
+                //alert("Current balance for the account is 0");
                 $("#bal").val(0);
             }
         });
 
-    });
+    });*/
 
 });
 
@@ -76,67 +76,20 @@ function getAllKycid() {
     })
 }
 
-function addTransaction() {
-    var obj = {};
 
-    obj.AccountNo = $("#accNm").val();
-    obj.Type = $("#type").val();
-    obj.TransDate = $("#date").val();
-    obj.Amount = $("#amount").val();
 
-    if (obj.AccountNo == null || obj.Type == null || obj.TransDate == null || obj.Amount == 0) {
-        alert("Fields cannot be empty");
-    }
-    else {
+function generateStatement(id, startDate, endDate) {
+    var id = $("#accNm").val();
+    var startDate = $("sdate").val();
+    var endDate = $("#edate").val();
 
-        $.ajax({
-            url: "/Transactions/AddTransaction",
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(obj),
-            success: function (response) {
-                alert(response);
-                clearFields();
-                fetchTransactions();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR == 'Withdrawal amount exceeds total deposit.') {
-                    // Handle withdrawal exceeds total deposit error
-                    alert('Withdrawal amount exceeds total deposit.');
-                }
-                else {
-                    alert('Withdrawal amount exceeds total deposit.');
-                }
-            }
 
-        });
-
-    }
-}
-
-function fetchTransactions() {
     $.ajax({
-        url: "/Transactions/GetTransaction",
+        url: "/Reports/GetCashStatement/" + id + "/" + startDate + "/" + endDate,
         type: "POST",
         dataType: "json",
-        contentType: "application/json; charset=utf-8",
         success: function (response) {
-            var dropdown = "";
-            $("#tTrans").html('');
-            for (let i = 0; i < response.length; i++) {
-                dropdown = dropdown
-                    + "<tr>"
-                    //+ "<td>" + response[i].TransId + "</td>"
-                    + "<td>" + response[i].AccountNo + "</td>"
-                    + "<td>" + response[i].Type + "</td>"
-                    + "<td>" + response[i].TransDate + "</td>"
-                    + "<td>" + response[i].Amount + "</td>"
-                    + "</tr>";
-            }
-            if (dropdown != null) {
-                $("#tTrans").append(dropdown);
-            }
+            alert(response);
         },
         error: function (msg) {
             alert("cannot fetch the transactions");
@@ -151,7 +104,6 @@ function clearFields() {
     $("#type").val("");
     $("#date").val("");
     $("#amount").val("");
-    $("#bal").val("");
 }
 
 function showPopup() {

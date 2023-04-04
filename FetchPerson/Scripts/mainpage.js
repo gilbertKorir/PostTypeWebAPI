@@ -32,6 +32,16 @@
         });
     })
 
+    $("#reports").click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url:"https://localhost:44386/Reports/ReportsAction",
+            success: function (data) {
+                $("#items").html(data);
+            }
+        });
+    })
+
 });
 
 function employeecount() {
@@ -54,13 +64,4 @@ function employeecount() {
     });
 }
 
-/*function getCountFromAPI() {
-    fetch("https://localhost:44368/api/person/fetch")
-        .then(response => response.json())
-        .then(data => {
-            const count = data.length;
-            document.getElementById('employeeCount').innerHTML = `Total count: ${count}`;
-        })
-        .catch(error => console.error(error));
-}*/
 
