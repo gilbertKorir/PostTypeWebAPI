@@ -492,31 +492,30 @@ namespace ApiPerson.Controllers
         }
 
         //get statements
-        //[Route("GetStatement/{id}/{startDate}/{endDate}")]
-        [Route("GetStatement/{id}/{startDate}/{endDate}")]
-        [HttpGet]
-        public IHttpActionResult GetStatement(int id, DateTime startDate, DateTime endDate)
+        [Route("GetStatement")]
+        [HttpPost]
+        public IHttpActionResult GetStatement(Report report)
         {
 
             using (SqlConnection connection = new SqlConnection(_conn))
             {
                 SqlCommand command = new SqlCommand("GetCashStatement", connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@AccountNo", id);
-                command.Parameters.AddWithValue("@startDate",startDate);
-                command.Parameters.AddWithValue("@endDate", endDate);
+                command.Parameters.AddWithValue("@AccountNo", report.AccountNo);
+                command.Parameters.AddWithValue("@startDate", report.startDate);
+                command.Parameters.AddWithValue("@endDate", report.endDate);
 
                 connection.Open();
 
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    //hold the results
-                    DataTable dataTable = new DataTable();
-                    dataTable.Load(reader);
+                 using (SqlDataReader reader = command.ExecuteReader())
+                 {
+                     //hold the results
+                     DataTable dataTable = new DataTable();
+                     dataTable.Load(reader);
 
-                    // Return JSON response
-                    return Ok(dataTable);
-                }
+                     // Return JSON response
+                     return Ok(dataTable);
+                 }
             }
         }
     }

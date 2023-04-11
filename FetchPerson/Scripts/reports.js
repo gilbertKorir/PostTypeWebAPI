@@ -1,8 +1,5 @@
 ﻿$(document).ready(function () {
     getAllKycid();
-    //fetchTransactions();
-
-    //populate
 
     $("#txtKycid").change(function () {
         var id = $("#txtKycid").val();
@@ -26,31 +23,6 @@
             }
         });
     });
-
-    //get currrent balance
-  /*  $('#accNm').change(function () {
-        var id = $("#accNm").val();
-        $.ajax({
-            url: "/Transactions/CurrentBalance/" + id,
-            type: "POST",
-            dataType: "json",
-            success: function (response) {
-                if (response) {
-                    // alert(response);
-                    $("#bal").val(response);
-                }
-                else {
-                    $("#bal").val(0);
-                }
-                //alert("The current balance for this account is :" + response);
-            },
-            error: function (xhr, status, error) {
-                //alert("Current balance for the account is 0");
-                $("#bal").val(0);
-            }
-        });
-
-    });*/
 
 });
 
@@ -78,24 +50,60 @@ function getAllKycid() {
 
 
 
-function generateStatement(id, startDate, endDate) {
-    var id = $("#accNm").val();
-    var startDate = $("sdate").val();
-    var endDate = $("#edate").val();
+function generateStatement() {
+    var obj = {};
+   obj.AccountNo = $("#accNm").val();
+   obj.startDate = $("#sdate").val();
+   obj.endDate = $("#edate").val();
 
+    var dt = new Date();
+       
+    //alert(JSON.stringify(obj));
+    if (obj.AccountNo == null) {
+        alert("No selected Account Number");
+    }
+    else if (new Date(obj.startDate) > dt) {
+        alert("Start date should not be past today");
+        return false;
+    }
+    else if (new Date(obj.endDate) > dt) {
+        alert("End date should not be past today");
+        return false;
+    }
+    else {
+        $.ajax({
+            url: "/Reports/GetCashStatement",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(obj),
+            success: function (response) {
+                //alert(JSON.stringify(response));
+                var tbl = "";
+                $("#statementTbl").html('');
+                for (let i = 0; i < response.length; i++) {
+                    tbl = tbl
+                        + "<tr>"
+                        + "<td>" + response[i].Type + "</td>"
+                        + "<td>" + (response[i].TransDate ? response[i].TransDate.slice(0, 10) : '') + "</td>"
+                        + "<td>" + (response[i].Debit || 0) + "</td>"
+                        + "<td>" + (response[i].Credit || 0) + "</td>"
+                        + "<td>" + (response[i].Balance) + "</td>"
+                        + "</tr>";
 
-    $.ajax({
-        url: "/Reports/GetCashStatement/" + id + "/" + startDate + "/" + endDate,
-        type: "POST",
-        dataType: "json",
-        success: function (response) {
-            alert(response);
-        },
-        error: function (msg) {
-            alert("cannot fetch the transactions");
-        }
+                }
+                if (tbl != null) {
 
-    });
+                    $("#statementTbl").append(tbl);
+                }
+            },
+            error: function (msg) {
+                alert("cannot fetch the statement");
+            }
+
+        });
+    }
+  
 }
 
 function clearFields() {

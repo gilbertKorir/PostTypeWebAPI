@@ -19,10 +19,13 @@
                 <span>Account No</span> : <select id="accNm" class="select"><option>--select--</option></select>
             </div>
 
-            <div style="margin-left:10px;">
-                <div style="margin-left:30px;">
-                    <span>Current Balance</span> : <input id="bal" class="select" type="text" readonly="readonly" />
-                </div>
+            @*<div style="margin-left:10px;">
+            <div style="margin-left:30px;">
+                <span>Current Balance</span> : <input id="bal" class="select" type="text" readonly="readonly" />
+            </div>
+        </div>*@
+            <div style="margin-left:15px;">
+                <button class="btn btn-success" id="generate" onclick="generateStatement()">Generate</button>
             </div>
         </div>
     </div>
@@ -41,9 +44,9 @@
                 <span>Amount</span> : <input id="amount" class="select" type="number" />
             </div>*@
 
-            <div style="margin-left:15px;">
+            @*<div style="margin-left:15px;">
                 <button class="btn btn-success" id="generate" onclick="generateStatement()">Generate</button>
-            </div>
+            </div>*@
         </div>
 
     </div>
@@ -57,14 +60,15 @@
             <table class="table table-bordered table-striped table-responsive">
                 <thead>
                     <tr>
-                        @*<th>Transaction Id</th>*@
-                        <th>Account No Id</th>
-                        <th>Type</th>
-                        <th>Date</th>
-                        <th>Amount</th>
+                        <th>TransactionType</th>
+                        <th>Transaction Date</th>
+                        @*<th>Amount</th>*@
+                        <th>Debit</th>
+                        <th>Credit</th>
+                        <th>Balance</th>
                     </tr>
                 </thead>
-                <tbody id="tTrans"></tbody>
+                <tbody id="statementTbl"></tbody>
             </table>
         </div>
     </div>
