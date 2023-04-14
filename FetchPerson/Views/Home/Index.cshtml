@@ -1,6 +1,7 @@
-﻿
-@*<link href="~/Content/mainpage.css" rel="stylesheet" />*@
+﻿@*<link href="~/Content/mainpage.css" rel="stylesheet" />*@
 <link href="~/Content/mainpage.css" rel="stylesheet" />
+<link href="~/Content/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+<link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
 
 <div class="container-fluid">
     <div class="row">
@@ -24,7 +25,8 @@
                     <a><img src="~/Images/transactions.png" /> <span id="transaction">Transactions</span></a>
                 </div>
                 <div>
-                    <a><img src="~/images/report.jpg" /> <span id="reports">Reports</span>
+                    <a>
+                        <img src="~/images/report.jpg" /> <span id="reports">Reports</span>
                     </a>
                 </div>
 
@@ -43,32 +45,32 @@
                     <h3>Dashboard</h3>
                 </div>
                 <div id="paneuser">
-                        <img src="~/Images/email.png" />
-                        <img src="~/Images/noti.png" />
-                        <img src="~/Images/profi.png" />
+                    <img src="~/Images/email.png" />
+                    <img src="~/Images/noti.png" />
+                    <img src="~/Images/profi.png" />
                 </div>
             </div>
-            
-                <div id="items" style="height:480px;">
-                    <div id="stats">
-                        <div class="box"  style="background-color: #5c97f7;">
-                            <h3>Employees</h3>
-                            <p id="employeeCount">90</p>
-                        </div>
-                        <div class="box" style="background-color: #f78f2d;">
-                            <h3>Accounts</h3>
-                            <p>150</p>
-                        </div>
-                        <div class="box" style="background-color: #1ea106;">
-                            <h3>Transactions</h3>
-                            <p>1000</p>
-                        </div>
+
+            <div id="items" style="height:480px;">
+                <div id="stats">
+                    <div class="box" style="background-color: #5c97f7;">
+                        <h3>Employees</h3>
+                        <p id="employeeCount">90</p>
                     </div>
-                    <div style="height:450px; width:100%; margin-top:10px;" class="text-center">
-                        <img style="height:370px; width:70%;" src="~/images/empgr.png" />
+                    <div class="box" style="background-color: #f78f2d;">
+                        <h3>Accounts</h3>
+                        <p>150</p>
+                    </div>
+                    <div class="box" style="background-color: #1ea106;">
+                        <h3>Transactions</h3>
+                        <p>1000</p>
                     </div>
                 </div>
-           
+                <div style="height:450px; width:100%; margin-top:10px;" class="text-center">
+                    <img style="height:370px; width:70%;" src="~/images/empgr.png" />
+                </div>
+            </div>
+
 
             <footer id="foot" style="background-color: #2f3030; height: 35px; width: 100%; color: wheat; margin-top: 50px; ">
                 <p style="padding-top:10px;" class="text-center">&copy; G-Tech, @DateTime.Now.Year - TrafCo Group of companies</p>
@@ -78,6 +80,9 @@
 </div>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/jquery.jqgrid.min.js"></script>
+<script src="~/Scripts/jqGrid/grid.locale-en.js"></script>
+<script src="~/Scripts/reports.js"></script>
 <script src="~/Scripts/mainpage.js"></script>
 
 

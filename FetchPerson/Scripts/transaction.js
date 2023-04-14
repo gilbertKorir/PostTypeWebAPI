@@ -2,6 +2,8 @@
     getAllKycid();
     fetchTransactions();
 
+    //$("#myTb").DataTable();
+
     //populate
 
     $("#txtKycid").change(function () {
@@ -61,7 +63,8 @@ function getAllKycid() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            var dropdown = "";
+            var dropdown = "<option value=''>-- select --</option>";
+            $("#txtKycid").html('');
             for (let i = 0; i < data.length; i++) {
                 dropdown = dropdown
                     + "<option value='" + data[i].Id + "'>" + data[i].Name + "</option>";

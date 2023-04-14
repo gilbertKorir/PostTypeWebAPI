@@ -513,9 +513,22 @@ namespace ApiPerson.Controllers
                      DataTable dataTable = new DataTable();
                      dataTable.Load(reader);
 
-                     // Return JSON response
-                     return Ok(dataTable);
+                    // Iterate through each row and cell
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        foreach (DataColumn column in dataTable.Columns)
+                        {
+                            // If the cell value is null, set it to 0
+                            if (row.IsNull(column))
+                            {
+                                row[column] = 0;
+                            }
+                        }
+                    }
+                    // Return JSON response
+                    return Ok(dataTable);
                  }
+               
             }
         }
     }

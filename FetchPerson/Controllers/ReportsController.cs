@@ -28,7 +28,9 @@ namespace FetchPerson.Controllers
             return View();
         }
 
-        public ActionResult GetCashStatement(ReportsModel report)
+
+
+        public JsonResult GetCashStatement(ReportsModel report)
         {
             try
             {          
@@ -55,7 +57,6 @@ namespace FetchPerson.Controllers
                         {
                             NullValueHandling = NullValueHandling.Ignore
                         };
-
                         List<Statement> result = JsonConvert.DeserializeObject<List<Statement>>(data, jsonSettings);
 
                         return Json(result, JsonRequestBehavior.AllowGet);

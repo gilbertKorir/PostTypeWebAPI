@@ -13,6 +13,6 @@ namespace FetchPerson.Models
         public Decimal? Credit { get; set; }
         public Decimal Amount { get; set; }
         public Decimal? Debit { get; set; }
-        public Decimal Balance { get; set; }
+        public Decimal? Balance { get; set; }
     }
 }

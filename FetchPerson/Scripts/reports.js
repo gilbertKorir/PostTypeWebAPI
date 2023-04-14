@@ -33,7 +33,9 @@ function getAllKycid() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
+            //var dropdown = "<option value=''>-- select --</option>";
             var dropdown = "";
+            //$("#txtKycid").html('');
             for (let i = 0; i < data.length; i++) {
                 dropdown = dropdown
                     + "<option value='" + data[i].Id + "'>" + data[i].Name + "</option>";
@@ -49,28 +51,23 @@ function getAllKycid() {
 }
 
 
-
 function generateStatement() {
     var obj = {};
-   obj.AccountNo = $("#accNm").val();
-   obj.startDate = $("#sdate").val();
-   obj.endDate = $("#edate").val();
+    obj.AccountNo = $("#accNm").val();
+    obj.startDate = $("#sdate").val();
+    obj.endDate = $("#edate").val();
 
     var dt = new Date();
-       
-    //alert(JSON.stringify(obj));
     if (obj.AccountNo == null) {
         alert("No selected Account Number");
-    }
-    else if (new Date(obj.startDate) > dt) {
-        alert("Start date should not be past today");
+    } else if (new Date(obj.startDate) > dt) {
+        alert("Start date has an error");
         return false;
-    }
-    else if (new Date(obj.endDate) > dt) {
-        alert("End date should not be past today");
+    } else if (new Date(obj.endDate) > dt || new Date(obj.endDate) < new Date(obj.startDate)) {
+        alert("End date has an error");
         return false;
-    }
-    else {
+    } else {
+    //alert(JSON.stringify(obj))
         $.ajax({
             url: "/Reports/GetCashStatement",
             type: "POST",
@@ -78,40 +75,44 @@ function generateStatement() {
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(obj),
             success: function (response) {
-                //alert(JSON.stringify(response));
-                var tbl = "";
-                $("#statementTbl").html('');
-                for (let i = 0; i < response.length; i++) {
-                    tbl = tbl
-                        + "<tr>"
-                        + "<td>" + response[i].Type + "</td>"
-                        + "<td>" + (response[i].TransDate ? response[i].TransDate.slice(0, 10) : '') + "</td>"
-                        + "<td>" + (response[i].Debit || 0) + "</td>"
-                        + "<td>" + (response[i].Credit || 0) + "</td>"
-                        + "<td>" + (response[i].Balance) + "</td>"
-                        + "</tr>";
-
-                }
-                if (tbl != null) {
-
-                    $("#statementTbl").append(tbl);
-                }
+                console.log(JSON.stringify(response));
+                $("#jptb").jqGrid({
+                    datatype: "json",
+                    colNames: ['Type', 'TransDate', 'Debit', 'Credit', 'Balance'],
+                    colModel: [
+                        { name: "Type", index: "Type", width: 150 },
+                        { name: "TransDate", index: "TransDate", width: 150 },
+                        { name: "Debit", index: "Debit", width: 150 },
+                        { name: "Credit", index: "Credit", width: 150 },
+                        { name: "Balance", index: "Balance", width: 150 }
+                    ],
+                    data: response,
+                    rowNum: 10,
+                    sortname: "TransDate",
+                    sortorder: "desc",
+                    rowList: [10, 20, 30],
+                    pager: '#jpager',
+                    viewrecords: true,
+                    caption: "Statement"
+                });
+                //clearFields();
             },
-            error: function (msg) {
-                alert("cannot fetch the statement");
-            }
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+            
 
+            }
         });
-    }
-  
+           }
 }
 
 function clearFields() {
     $("#txtKycid").val("");
     $("#accNm").val("");
     $("#type").val("");
-    $("#date").val("");
-    $("#amount").val("");
+    $("#sdate").val("");
+    $("#edate").val("");
+
 }
 
 function showPopup() {
@@ -135,3 +136,98 @@ function validate() {
         alert("Fields cannot be empty");
     }
 }
+
+
+
+//function generateStatement() {
+//    var obj = {};
+//    obj.AccountNo = $("#accNm").val();
+//    obj.startDate = $("#sdate").val();
+//    obj.endDate = $("#edate").val();
+
+//    var dt = new Date();
+//    if (obj.AccountNo == null) {
+//        alert("No selected Account Number");
+//    }
+//    else if (new Date(obj.startDate) > dt) {
+//        alert("Start date has an error");
+//        return false;
+//    }
+//    else if (new Date(obj.endDate) > dt || new Date(obj.endDate) < new Date(obj.startDate)) {
+//        alert("End date has an error");
+//        return false;
+//    }
+//    else {
+//        $.ajax({
+//            url: "/Reports/GetCashStatement",
+//            //type: "POST",
+//            //dataType: "json",
+//            //contentType: "application/json; charset=utf-8",
+//            data: JSON.stringify(obj),
+//            success: function (response) {
+//                $("#jptb").jqGrid({
+//                    dataType: "json",
+//                    type: "POST",
+//                    data: JSON.stringify(obj),
+//                    colNames: ['Type', 'TransDate', 'Debit', 'Credit', 'Balance'],
+//                    colModel: [
+//                        { name: "Type", index: "Type", width: 150 },
+//                        { name: "TransDate", index: "TransDate", width: 150 },
+//                        { name: "Debit", index: "Debit", width: 150 },
+//                        { name: "Credit", index: "Credit", width: 150 },
+//                        { name: "Balance", index: "Balance", width: 150 }
+//                    ],
+//                    data: response,
+//                    rowNum: 10,
+//                    sortname: "TransDate",
+//                    sortorder: "desc"
+//                });
+
+//                //alert(JSON.stringify(response));
+//                /* var tbl = "";
+//                 $("#statementTbl").html('');
+//                 for (let i = 0; i < response.length; i++) {
+//                     tbl = tbl
+//                         + "<tr>"
+//                         + "<td>" + response[i].Type + "</td>"
+//                         + "<td>" + (response[i].TransDate ? response[i].TransDate.slice(0, 10) : '') + "</td>"
+//                         + "<td>" + (response[i].Debit || 0) + "</td>"
+//                         + "<td>" + (response[i].Credit || 0) + "</td>"
+//                         + "<td>" + (response[i].Balance) + "</td>"
+//                         + "</tr>";
+//                 }
+//                 if (tbl != null) {
+
+//                     $("#statementTbl").append(tbl);
+//                 }
+//             },
+//             error: function (msg) {
+//                 alert("cannot fetch the statement");
+//             }*/
+//            },
+//            error: function (xhr, status, error) {
+//                console.log(xhr.responseText);
+//            }
+//        });
+//    }
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
