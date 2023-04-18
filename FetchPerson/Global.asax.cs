@@ -17,5 +17,19 @@ namespace FetchPerson
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+      /*  protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception exception = Server.GetLastError();
+            Response.Clear();
+            HttpException httpException = exception as HttpException;
+            if (httpException != null)
+            {
+                Response.StatusCode = httpException.GetHttpCode();
+                Server.ClearError();
+                Response.TrySkipIisCustomErrors = true;
+            }
+        }*/
+
     }
 }

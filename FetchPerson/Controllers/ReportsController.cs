@@ -29,7 +29,6 @@ namespace FetchPerson.Controllers
         }
 
 
-
         public JsonResult GetCashStatement(ReportsModel report)
         {
             try

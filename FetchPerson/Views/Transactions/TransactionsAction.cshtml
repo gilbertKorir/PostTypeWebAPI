@@ -1,5 +1,8 @@
 ﻿
 <link href="~/Content/mainpage.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+<link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
 
 <div class="container" id="transPage">
     <h2 style="font-family:'Monotype Corsiva'; font-size:30px;">Respective Transactions Done</h2>
@@ -34,7 +37,7 @@
             </div>
 
             <div style="margin-left:30px;">
-                <span>Current Balance</span> : <input id="bal" class="select" type="text" readonly="readonly"/>
+                <span>Current Balance</span> : <input id="bal" class="select" type="text" readonly="readonly" />
             </div>
 
             <div style="margin-left:15px;">
@@ -44,28 +47,21 @@
 
     </div>
     <div id="popupBox" class="popup">
-        <p class="text-center"><img  src="~/images/tick.jpg" style="height:40px; width:40px;"/></p>
+        <p class="text-center"><img src="~/images/tick.jpg" style="height:40px; width:40px;" /></p>
         <p class="text-center">Transaction Done successfully.</p>
         <p class="text-center"><button class="btn btn-success" onclick="hidePopup()">Ok</button></p>
     </div>
     <div class="row">
-        <div class="col-md-12" style="margin-top:10px; height:280px; overflow:auto; z-index:1;">
-            <table id="myTb" class="table table-bordered table-striped table-responsive">
-                <thead>
-                    <tr>
-                        @*<th>Transaction Id</th>*@
-                        <th>Account No Id</th>
-                        <th>Type</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody id="tTrans"></tbody>
-            </table>
+        <div class="col-md-12" style="margin-top:10px; height:280px;">
+            <table id="myTb"></table>
+            <table id="jpager"></table>
         </div>
     </div>
 </div>
 
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/jquery.jqgrid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="~/Scripts/jqGrid/grid.locale-en.js"></script>
 <script src="~/Scripts/transaction.js"></script>

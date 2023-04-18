@@ -15,6 +15,7 @@ function clear() {
 
 //add employee
 function Add() {
+
     var objEmp = {};
 
     objEmp.Name = $("#txtName").val();
@@ -28,35 +29,82 @@ function Add() {
         objEmp.Active = 0;
     }
 
-    $.ajax({
-        url:"/Person/AddEmployee",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify(objEmp),
-        type: "POST",
-        success: function (data) {
-            fetchData();
-            clear();
-        },
-        error: function (msg) {
-            alert("Error adding the data");
-           // fetchData();
-            //clear();
-        }
-    });
+    if (objEmp.Name == null || objEmp.Age == null || objEmp.Age == 0) {
+        alert("Check your fields clearly");
+    }
+    else {
+        $.ajax({
+            url: "/Person/AddEmployee",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(objEmp),
+            type: "POST",
+            success: function (data) {
+                fetchData();
+                clear();
+            },
+            error: function (msg) {
+                alert("Error adding the data");
+                // fetchData();
+                //clear();
+            }
+        });
+    }
 }
 
 function fetchData() {
+
     $.ajax({
         type: "POST",
         url: "/Person/GetAllEmployees",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function (data) {
-            //alert(JSON.stringify(data));
-            if (data) {
-                EmpData = data;
-                $("#tbody").html("");
+        success: function (response) {
+           // alert(response);
+            if (response) {
+                //EmpData = response;
+
+                $("#tbody").jqGrid("GridUnload");
+
+                $("#tbody").jqGrid({
+                   
+                    colNames: ['Employee Id', 'Name', 'Age', 'Active'],
+                    colModel: [
+                        { name: "Id", name: "Id", width: 150 },
+                        { name: "Name", name: "Name", width: 150 },
+                        { name: "Age", name: "Age", width: 150 },
+                        { name: "Active", name: "Active", width: 140 }
+                    ],
+                    data: response,
+                    rowNum: 20,
+                    pager: '#jpager',
+                    viewrecords: true,
+                    caption: "Employee Table",
+                    height: 'auto',
+
+                    ondblClickRow: function (Id, iRow, iCol, e) {
+                        // get the data from the row
+                        $(".empId").show();
+                        $("#update").show();
+                        $("#adding").hide();
+
+                        var rowData = $("#tbody").getRowData(Id);
+
+                        // populate the required fields
+                        $("#txtName").val(rowData.Name);
+                         $("#txtAge").val(rowData.Age);
+                         $("#txtActive").val(rowData.Active);
+                         $("#txtId").val(rowData.Id);
+                    }
+
+                });
+
+                $("#tbody").trigger("reloadGrid");
+
+
+
+
+              /*  $("#tbody").html("");
                 var row = "";
                 for (let i = 0; i< data.length; i++) {
                     row = row
@@ -70,7 +118,7 @@ function fetchData() {
                 }
                 if (row != null) {
                     $("#tbody").append(row);
-                }
+                }*/
             }
         },
         error: function (xhr, status, error) {
@@ -78,15 +126,28 @@ function fetchData() {
         }
     });
 }
-function editproduct(i) {
+
+
+function editproduct(id) {
     $(".empId").show();
     $("#update").show();
     $("#adding").hide();
 
-    $("#txtName").val(EmpData[i].Name);
-    $("#txtAge").val(EmpData[i].Age);
-    $("#txtActive").val(EmpData[i].Active);
-    $("#txtId").val(EmpData[i].Id);
+    // Get the index of the row in the data array
+    //var index = $("#tbody").jqGrid('getInd', Id);
+
+    // Get the data for the selected row
+   // var rowData = $("#tbody").jqGrid('getGridParam', 'data')[index];
+
+    
+
+    var rowData = $("#tbody").jqGrid('getRowData', id);
+
+    alert(rowData);
+    //$("#txtName").val(Name);
+   /* $("#txtAge").val(rowData.Age);
+    $("#txtActive").val(rowData.Active);
+    $("#txtId").val(rowData.Id);*/
 
 }
 

@@ -125,7 +125,52 @@ function fetchTransactions() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (response) {
-            var dropdown = "";
+            //alert(response);
+            if (response) {
+                $("#myTb").jqGrid("GridUnload");
+                $("#myTb").jqGrid({
+
+                    colNames: ['Account No Id', 'Type', 'Date', 'Amount'],
+                    colModel: [
+                        //{ name: "TransId", name: "TransId", width: 150 },
+                        { name: "AccountNo", name: "AccountNo", width: 150 },
+                        { name: "Type", name: "Type", width: 150 },
+                        { name: "TransDate", name: "TransDate", width: 150 },
+                        { name: "Amount", name: "Amount", width: 150 }
+                    ],
+                    data: response,
+                    rowNum: 12,
+                    pager: '#jpager',
+                    viewrecords: true,
+                    rowList: [12],
+                    caption: "Transactions",
+                    height: 'auto',
+
+                    ondblClickRow: function (Id, iRow, iCol, e) {
+
+                        var rowData = $("#myTb").getRowData(Id);
+
+                        // populate the required fields
+                        /*  $("#txtName").val(rowData.AccountName);
+                          $("#txtKyc").val(rowData.KycId);
+                          $("#txtActive").val(rowData.Active);
+                          $("#txtIdAcc").val(rowData.KycId);*/
+                    }
+                });
+                $("#myTb").trigger("reloadGrid");
+               // $("#myTb").jqGrid('navGrid', '#jpager', { edit: false, add: false, del: false });
+            }
+        
+
+
+
+
+
+
+
+
+
+           /* var dropdown = "";
             $("#tTrans").html('');
             for (let i = 0; i < response.length; i++) {
                 dropdown = dropdown
@@ -139,7 +184,7 @@ function fetchTransactions() {
             }
             if (dropdown != null) {
                 $("#tTrans").append(dropdown);
-            }
+            }*/
         },
         error: function (msg) {
             alert("cannot fetch the transactions");
