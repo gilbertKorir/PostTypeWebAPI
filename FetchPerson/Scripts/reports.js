@@ -34,9 +34,7 @@ function getAllKycid() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            //var dropdown = "<option value=''>-- select --</option>";
             var dropdown = "";
-            //$("#txtKycid").html('');
             for (let i = 0; i < data.length; i++) {
                 dropdown = dropdown
                     + "<option value='" + data[i].Id + "'>" + data[i].Name + "</option>";
@@ -91,25 +89,24 @@ function generateStatement() {
                 $("#jptb").jqGrid("GridUnload");
 
                 $("#jptb").jqGrid({
-                    //type: "POST",
-                    //data: JSON.stringify(obj),
+
+                    width:'100%',
                     colNames: ['Type', 'TransDate', 'Debit', 'Credit', 'Balance'],
                     colModel: [
-                        { name: "Type", name: "Type", width: 150 },
-                        { name: "TransDate", name: "TransDate", width: 150 },
-                        { name: "Debit", name: "Debit", width: 150 },
-                        { name: "Credit", name: "Credit", width: 140 },
-                        { name: "Balance", name: "Balance", width: 140 }
+                        { name: "Type", name: "Type"},
+                        { name: "TransDate", name: "TransDate"},
+                        { name: "Debit", name: "Debit"},
+                        { name: "Credit", name: "Credit"},
+                        { name: "Balance", name: "Balance"}
                     ],
                     data: data,
                     rowNum: 20,
-                    //sortname: "TransDate",
-                   /* sortdirection: 'asc',*/
-                   // rowList: [10, 20, 30],
                     pager: '#jpager',
                     viewrecords: true,
                     caption: "Statement",
-                    height: 'auto'
+                    height: '100%',
+                    autowidth: true,
+                    align: 'center'
                 });
 
                 $("#jptb").trigger("reloadGrid");

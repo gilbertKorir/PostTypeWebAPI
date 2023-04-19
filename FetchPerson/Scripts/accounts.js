@@ -42,19 +42,22 @@ function getAccounts() {
 
                 $("#tbaccounts").jqGrid({
 
+                    width: '100%',
                     colNames: ['Account Name', 'KycId','Active'],
                     colModel: [
-                        { name: "AccountName", name: "AccountName", width: 150 },
-                        { name: "KycId", name: "KycId", width: 150 },
-                        { name: "Active", name: "Active", width: 150 }
+                        { name: "AccountName", name: "AccountName"},
+                        { name: "KycId", name: "KycId" },
+                        { name: "Active", name: "Active"}
                     ],
                     data: response,
-                    rowNum: 8,
+                    rowNum: 9,
                     pager: '#jpager',
                     viewrecords: true,
-                    rowList: [10,20,30,50],
+                   /* rowList: [11,12],*/
                     caption: "Accounts",
-                    height: 'auto',
+                    height: '100%',
+                    autowidth: true,
+                    align: 'center',
 
                     ondblClickRow: function (Id, iRow, iCol, e) {
 
@@ -72,6 +75,7 @@ function getAccounts() {
                         $("#txtIdAcc").val(rowData.KycId);
                     }
                 });
+                $("#tbaccounts").jqGrid('navGrid', '#jpager', { edit: false, add: false, del: false });
                 $("#tbaccounts").trigger("reloadGrid");
             }
         },

@@ -397,7 +397,7 @@ namespace ApiPerson.Controllers
 
 
         //TRANSACTIONS
-        [HttpPost]
+       [HttpPost]
         [Route("AddTransaction")]
         public IHttpActionResult AddTransation(Transactions transactions)
         {

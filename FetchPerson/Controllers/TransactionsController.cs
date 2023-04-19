@@ -1,5 +1,6 @@
 ﻿using FetchPerson.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -61,45 +62,46 @@ namespace FetchPerson.Controllers
             return Json(accountNames);
         }
 
+
         //add a transaction
         [HttpPost]
-        public ActionResult AddTransaction(Transactions transactions)
-        {
-            string myAPI = "https://localhost:44368/api/person/addtransaction";
-            string strPayLoad = JsonConvert.SerializeObject(transactions);
-            string response = "";
+         public ActionResult AddTransaction(Transactions transactions)
+         {
+             string myAPI = "https://localhost:44368/api/person/addtransaction";
+             string strPayLoad = JsonConvert.SerializeObject(transactions);
+             string response = "";
 
-            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(myAPI);
-            client.Method = "POST";
-            client.ContentType = "application/json";
-            client.ContentLength = strPayLoad.Length;
-            client.Timeout = 600000;
-            using (Stream webStream = client.GetRequestStream())
-            using (StreamWriter requestWriter = new StreamWriter(webStream, Encoding.ASCII))
-            {
-                requestWriter.Write(strPayLoad);
-            }
+             HttpWebRequest client = (HttpWebRequest)WebRequest.Create(myAPI);
+             client.Method = "POST";
+             client.ContentType = "application/json";
+             client.ContentLength = strPayLoad.Length;
+             client.Timeout = 600000;
+             using (Stream webStream = client.GetRequestStream())
+             using (StreamWriter requestWriter = new StreamWriter(webStream, Encoding.ASCII))
+             {
+                 requestWriter.Write(strPayLoad);
+             }
 
-            try
-            {
-                WebResponse webResponse = client.GetResponse();
-                using (Stream webStream = webResponse.GetResponseStream())
-                {
-                    if (webStream != null)
-                    {
-                        using (StreamReader responseReader = new StreamReader(webStream))
-                        {
-                            response = responseReader.ReadToEnd();
-                        }
-                    }
-                } 
+             try
+             {
+                 WebResponse webResponse = client.GetResponse();
+                 using (Stream webStream = webResponse.GetResponseStream())
+                 {
+                     if (webStream != null)
+                     {
+                         using (StreamReader responseReader = new StreamReader(webStream))
+                         {
+                             response = responseReader.ReadToEnd();
+                         }
+                     }
+                 } 
 
-                return Json(response); 
-            }catch{
-                return null;
-            }
-            }
-           
+                 return Json(response); 
+             }catch{
+                 return null;
+             }
+             }
+
         //fetch all transactions
         [HttpPost]
         public ActionResult GetTransaction()
@@ -131,8 +133,8 @@ namespace FetchPerson.Controllers
                 }
             }
             return Json(msg);
-        }
 
+        }
     }
 }
 

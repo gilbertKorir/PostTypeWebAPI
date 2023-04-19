@@ -16,7 +16,6 @@
                 var dropdown = "<option value=''> --select-- </option>";
                 $("#accNm").empty();
                 for (var i = 0; i < data.length; i++) {
-                   /* $dropdown.append("<option value='" + data[i].Id + "'>" + data[i].AccountName + "</option>");*/
                     dropdown = dropdown + "<option value='" + data[i].Id + "'>" + data[i].AccountName + "</option>";
                 }
                 if (dropdown != null) {
@@ -37,14 +36,13 @@
             type: "POST",
             dataType: "json",
             success: function (response) {
+                //alert(response)
                 if (response) {
-                   // alert(response);
                     $("#bal").val(response);
                 }
                 else {
-                    $("#bal").val(0);
+                   $("#bal").val(0);
                 }
-                //alert("The current balance for this account is :" + response);
             },
             error: function (xhr, status, error) {
                 alert("Current balance for the account is 0");
@@ -87,7 +85,7 @@ function addTransaction() {
     obj.TransDate = $("#date").val();
     obj.Amount = $("#amount").val();
 
-    if (obj.AccountNo == null || obj.Type == null || obj.TransDate == null || obj.Amount == 0) {
+    if (obj.AccountNo == null || obj.Type == null || obj.TransDate == null || obj.Amount == null) {
         alert("Fields cannot be empty");
     }
     else {
@@ -101,20 +99,14 @@ function addTransaction() {
             success: function (response) {
                 alert(response);
                 clearFields();
-                fetchTransactions();
+                //fetchTransactions();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR == 'Withdrawal amount exceeds total deposit.') {
-                    // Handle withdrawal exceeds total deposit error
+               
                     alert('Withdrawal amount exceeds total deposit.');
-                }
-                else {
-                    alert('Withdrawal amount exceeds total deposit.');
-                }
+                
             }
-
         });
-
     }
 }
 
@@ -129,14 +121,13 @@ function fetchTransactions() {
             if (response) {
                 $("#myTb").jqGrid("GridUnload");
                 $("#myTb").jqGrid({
-
+                    width: '100%',
                     colNames: ['Account No Id', 'Type', 'Date', 'Amount'],
                     colModel: [
-                        //{ name: "TransId", name: "TransId", width: 150 },
-                        { name: "AccountNo", name: "AccountNo", width: 150 },
-                        { name: "Type", name: "Type", width: 150 },
-                        { name: "TransDate", name: "TransDate", width: 150 },
-                        { name: "Amount", name: "Amount", width: 150 }
+                        { name: "AccountNo", name: "AccountNo"},
+                        { name: "Type", name: "Type"},
+                        { name: "TransDate", name: "TransDate"},
+                        { name: "Amount", name: "Amount"}
                     ],
                     data: response,
                     rowNum: 12,
@@ -144,7 +135,9 @@ function fetchTransactions() {
                     viewrecords: true,
                     rowList: [12],
                     caption: "Transactions",
-                    height: 'auto',
+                    height: '100%',
+                    autowidth: true,
+                    align: 'center',
 
                     ondblClickRow: function (Id, iRow, iCol, e) {
 
@@ -157,34 +150,9 @@ function fetchTransactions() {
                           $("#txtIdAcc").val(rowData.KycId);*/
                     }
                 });
+                //$("#myTb").jqGrid('navGrid', '#jpager', {edit:false, add:false, del:false});
                 $("#myTb").trigger("reloadGrid");
-               // $("#myTb").jqGrid('navGrid', '#jpager', { edit: false, add: false, del: false });
             }
-        
-
-
-
-
-
-
-
-
-
-           /* var dropdown = "";
-            $("#tTrans").html('');
-            for (let i = 0; i < response.length; i++) {
-                dropdown = dropdown
-                    + "<tr>"
-                    //+ "<td>" + response[i].TransId + "</td>"
-                    + "<td>" + response[i].AccountNo + "</td>"
-                    + "<td>" + response[i].Type + "</td>"
-                    + "<td>" + response[i].TransDate + "</td>"
-                    + "<td>" + response[i].Amount + "</td>"
-                    + "</tr>";
-            }
-            if (dropdown != null) {
-                $("#tTrans").append(dropdown);
-            }*/
         },
         error: function (msg) {
             alert("cannot fetch the transactions");

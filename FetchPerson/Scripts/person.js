@@ -67,20 +67,23 @@ function fetchData() {
                 $("#tbody").jqGrid("GridUnload");
 
                 $("#tbody").jqGrid({
-                   
+                   width:'100%',
                     colNames: ['Employee Id', 'Name', 'Age', 'Active'],
                     colModel: [
-                        { name: "Id", name: "Id", width: 150 },
-                        { name: "Name", name: "Name", width: 150 },
-                        { name: "Age", name: "Age", width: 150 },
-                        { name: "Active", name: "Active", width: 140 }
+                        { name: "Id", name: "Id" },
+                        { name: "Name", name: "Name", editable:true },
+                        { name: "Age", name: "Age"},
+                        { name: "Active", name: "Active" }
                     ],
                     data: response,
                     rowNum: 20,
                     pager: '#jpager',
                     viewrecords: true,
+                    rowList:[8,12],
                     caption: "Employee Table",
-                    height: 'auto',
+                    height: '100%',
+                    autowidth: true,
+                    align:'center',
 
                     ondblClickRow: function (Id, iRow, iCol, e) {
                         // get the data from the row
@@ -98,7 +101,7 @@ function fetchData() {
                     }
 
                 });
-
+                $("#tbody").jqGrid('navGrid', '#jpager', { edit: true, add: false, del: false });
                 $("#tbody").trigger("reloadGrid");
 
 
