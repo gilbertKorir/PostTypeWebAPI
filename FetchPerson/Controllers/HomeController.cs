@@ -31,20 +31,5 @@ namespace FetchPerson.Controllers
             return View();
         }
 
-
-       /* [HttpPost]
-        public ActionResult GetAllEmployees()
-        {
-           
-           List<PersonModel> _persons = new List<PersonModel>();
-            HttpResponseMessage response = client.GetAsync("https://localhost:44368/api/person/fetch").Result;
-            if (response.IsSuccessStatusCode)
-            {
-                string res = response.Content.ReadAsStringAsync().Result;
-                _persons = JsonConvert.DeserializeObject<List<PersonModel>>(res);
-            }
-            return Json(_persons);
-        }*/
-
     }
 }

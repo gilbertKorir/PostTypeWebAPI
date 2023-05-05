@@ -1,18 +1,10 @@
 ﻿using FetchPerson.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Principal;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace FetchPerson.Controllers
@@ -44,23 +36,24 @@ namespace FetchPerson.Controllers
             return Json(_names);
         }
 
+
         [HttpPost]
         public ActionResult GetAccountsForId(int id)
-        {
+        { 
             List<AccountsModel> accountNames = new List<AccountsModel>();
-
-                using (HttpClient client = new HttpClient())
-                {
-                    string url = $"https://localhost:44368/api/person/accsd/{id}";
-                    HttpResponseMessage response = client.GetAsync(url).Result;
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string responseData = response.Content.ReadAsStringAsync().Result;
-                        accountNames = JsonConvert.DeserializeObject<List<AccountsModel>>(responseData);
-                    }
-                }
-            return Json(accountNames);
+              using (HttpClient client = new HttpClient())
+              {
+                  string url = $"https://localhost:44368/api/person/accsd/{id}";
+                  HttpResponseMessage response = client.GetAsync(url).Result;
+                  if (response.IsSuccessStatusCode)
+                  {
+                      string responseData = response.Content.ReadAsStringAsync().Result;
+                      accountNames = JsonConvert.DeserializeObject<List<AccountsModel>>(responseData);
+                  }
+              }
+          return Json(accountNames);
         }
+
 
 
         //add a transaction

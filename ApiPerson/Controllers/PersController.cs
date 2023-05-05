@@ -402,7 +402,7 @@ namespace ApiPerson.Controllers
         public IHttpActionResult AddTransation(Transactions transactions)
         {
             string msg = "";
-                if (transactions != null)
+                if (transactions != null) 
                 {
                   DataTable dt = new DataTable();
                   using (SqlDataAdapter da = new SqlDataAdapter())

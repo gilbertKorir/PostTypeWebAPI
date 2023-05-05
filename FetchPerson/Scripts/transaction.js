@@ -125,9 +125,9 @@ function fetchTransactions() {
                     colNames: ['Account No Id', 'Type', 'Date', 'Amount'],
                     colModel: [
                         { name: "AccountNo", name: "AccountNo"},
-                        { name: "Type", name: "Type"},
-                        { name: "TransDate", name: "TransDate"},
-                        { name: "Amount", name: "Amount"}
+                        { name: "Type", name: "Type", align: 'center' },
+                        { name: "TransDate", name: "TransDate", align: 'center' },
+                        { name: "Amount", name: "Amount", align:'center'}
                     ],
                     data: response,
                     rowNum: 12,
@@ -144,10 +144,13 @@ function fetchTransactions() {
                         var rowData = $("#myTb").getRowData(Id);
 
                         // populate the required fields
-                        /*  $("#txtName").val(rowData.AccountName);
-                          $("#txtKyc").val(rowData.KycId);
-                          $("#txtActive").val(rowData.Active);
-                          $("#txtIdAcc").val(rowData.KycId);*/
+
+                        $("#txtKycid").val(rowData.AccountNo);
+                        $("#accNm").val(rowData.id);
+                        $("#type").val(rowData.Type);
+                        $("#date").val(rowData.TransDate);
+                        $("#amount").val(rowData.Amount);
+                        //$("#bal").val("");
                     }
                 });
                 //$("#myTb").jqGrid('navGrid', '#jpager', {edit:false, add:false, del:false});

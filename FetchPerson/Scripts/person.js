@@ -67,24 +67,23 @@ function fetchData() {
                 $("#tbody").jqGrid("GridUnload");
 
                 $("#tbody").jqGrid({
-                   width:'100%',
+                    width: '100%',
                     colNames: ['Employee Id', 'Name', 'Age', 'Active'],
                     colModel: [
-                        { name: "Id", name: "Id" },
-                        { name: "Name", name: "Name", editable:true },
-                        { name: "Age", name: "Age"},
-                        { name: "Active", name: "Active" }
+                        { name: "Id", name: "Id", hidden:true},
+                        { name: "Name", name: "Name", editable: true, align:"center" },
+                        { name: "Age", name: "Age", editable: true, align: "center" },
+                        { name: "Active", name: "Active", editable: true, align: "center" }
                     ],
                     data: response,
                     rowNum: 20,
                     pager: '#jpager',
                     viewrecords: true,
-                    rowList:[8,12],
+                    rowList: [8, 12],
                     caption: "Employee Table",
                     height: '100%',
                     autowidth: true,
-                    align:'center',
-
+                    align: 'center',
                     ondblClickRow: function (Id, iRow, iCol, e) {
                         // get the data from the row
                         $(".empId").show();
@@ -95,33 +94,28 @@ function fetchData() {
 
                         // populate the required fields
                         $("#txtName").val(rowData.Name);
-                         $("#txtAge").val(rowData.Age);
-                         $("#txtActive").val(rowData.Active);
-                         $("#txtId").val(rowData.Id);
+                        $("#txtAge").val(rowData.Age);
+                        $("#txtActive").val(rowData.Active);
+                        $("#txtId").val(rowData.Id);
                     }
 
+                }).navGrid('#jpager', { edit: true, add: true, del: false, search: true, refresh: false },
+                {
+                    //update
+                    edit:true,
+                    width: 400,
+                    url: '/Person/UpdateEmp',
+                    closeAfterEdit: true,
+                    afterComplete: function (response) {
+                        console.log(response);
+                    $('#tbody').setGridParam({ datatype: 'json', page: 1 }).trigger("reloadGrid");
+                    alert(response.responseText);
+                    }
+             
                 });
-                $("#tbody").jqGrid('navGrid', '#jpager', { edit: true, add: false, del: false });
-                $("#tbody").trigger("reloadGrid");
 
+                //$("#tbody").trigger("reloadGrid");
 
-
-
-              /*  $("#tbody").html("");
-                var row = "";
-                for (let i = 0; i< data.length; i++) {
-                    row = row
-                        + "<tr>"
-                        + "<td>" + data[i].Id + "</td>"
-                        + "<td>" + data[i].Name + "</td>"
-                        + "<td>" + data[i].Age + "</td>"
-                        + "<td>" + data[i].Active + "</td>"
-                        + "<td><button id='btnEdit' class='btn btn-success' onclick='editproduct(" + i + ")'>Edit</button></td>"
-                        + "</tr>";
-                }
-                if (row != null) {
-                    $("#tbody").append(row);
-                }*/
             }
         },
         error: function (xhr, status, error) {
@@ -136,21 +130,9 @@ function editproduct(id) {
     $("#update").show();
     $("#adding").hide();
 
-    // Get the index of the row in the data array
-    //var index = $("#tbody").jqGrid('getInd', Id);
-
-    // Get the data for the selected row
-   // var rowData = $("#tbody").jqGrid('getGridParam', 'data')[index];
-
-    
-
     var rowData = $("#tbody").jqGrid('getRowData', id);
 
     alert(rowData);
-    //$("#txtName").val(Name);
-   /* $("#txtAge").val(rowData.Age);
-    $("#txtActive").val(rowData.Active);
-    $("#txtId").val(rowData.Id);*/
 
 }
 

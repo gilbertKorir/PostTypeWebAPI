@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Security;
@@ -7,8 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using CrystalDecisions.CrystalReports.Engine;
 using FetchPerson.Models;
 using Newtonsoft.Json;
+using CrystalDecisions.CrystalReports;
+using CrystalDecisions.ReportSource;
+using CrystalDecisions.Shared;
 
 namespace FetchPerson.Controllers
 {
@@ -65,10 +71,37 @@ namespace FetchPerson.Controllers
             var response = await client.PostAsync("https://localhost:44368/api/person/edit", content);
             if (response.IsSuccessStatusCode)
             {
-                return Json(new { success = true });
+                //return Json(new { success = true });
+                return Json(response);
             }
-            return Json(new { success = false });
+            //return Json(new { success = false });
+            return Json(response);
         }
+
+        public ActionResult GetEmployeeReport()
+        {
+            //get data
+            List<PersonModel> persons = new List<PersonModel>();
+            HttpResponseMessage response = client.GetAsync("https://localhost:44368/api/person/fetch").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string res = response.Content.ReadAsStringAsync().Result;
+                _persons = JsonConvert.DeserializeObject<List<PersonModel>>(res);
+            }
+
+            //crystal report instance
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Server.MapPath("~/Reports/Employeereport.rpt"));
+
+            rd.SetDataSource(persons);
+
+            //export report
+            Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+            return File(stream, "application/pdf", "Employeereport.pdf");
+
+        }
+
+
     }
 }
 
