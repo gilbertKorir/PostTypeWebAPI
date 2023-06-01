@@ -91,7 +91,7 @@ namespace FetchPerson.Controllers
             }
 
             // Create a new DataTable instance and add columns
-            DataTable dataTable = new DataTable("EmployeeTable");
+            DataTable dataTable = new DataTable();
             dataTable.Columns.Add("Id", typeof(int));
             dataTable.Columns.Add("Name", typeof(string));
             dataTable.Columns.Add("Age", typeof(int));
@@ -115,53 +115,47 @@ namespace FetchPerson.Controllers
             rd.SetDataSource(dataTable);
 
             // Export the report to a stream and return it as a PDF file
-            Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
+            Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
             return File(stream, "application/pdf", "Employeereport.pdf");
 
         }
 
         public ActionResult GenerateReport()
         {
-                // Retrieve data from the Web API
-                HttpResponseMessage response = client.GetAsync("https://localhost:44368/api/person/fetch").Result;
-                if (response.IsSuccessStatusCode)
+            // Retrieve data from the Web API
+            HttpResponseMessage response = client.GetAsync("https://localhost:44368/api/person/fetch").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string res = response.Content.ReadAsStringAsync().Result;
+                List<PersonModel> persons = JsonConvert.DeserializeObject<List<PersonModel>>(res);
+
+                // Create an instance of the Crystal Report
+                ReportDocument report = new ReportDocument();
+                report.Load(Path.Combine(Server.MapPath("~/Reporting"), "EmployeeReport.rpt"));
+                // report.Load(Server.MapPath("~/Reporting/EmployeeReport.rpt"));
+
+                // Set the report data source
+                report.SetDataSource(persons);
+                Response.Buffer = false;
+                Response.ClearContent();
+                Response.ClearHeaders();
+
+                try
                 {
-                    string res = response.Content.ReadAsStringAsync().Result;
-                    List<PersonModel> persons = JsonConvert.DeserializeObject<List<PersonModel>>(res);
-
-                    // Create an instance of the Crystal Report
-                    ReportDocument report = new ReportDocument();
-                    report.Load(Server.MapPath("D:/C-SHARP-projects/ApiPerson/FetchPerson/Reporting/EmployeeReport.rpt"));
-                   // report.Load(Server.MapPath("~/Reporting/EmployeeReport.rpt"));
-
-                    // Set the report data source
-                    report.SetDataSource(persons);
-
-                    // Set export options
-                    ExportOptions options = new ExportOptions();
-                    options.ExportFormatType = ExportFormatType.PortableDocFormat;
-                    options.ExportDestinationType = ExportDestinationType.DiskFile;
-                    options.DestinationOptions = new DiskFileDestinationOptions
-                    {
-                        DiskFileName = Server.MapPath("~/Reporting/EmployeeReport.pdf")
-                    };
-
-                //ReportDocumentOptions reportOptions = report.ReportOptions;
-                //reportOptions.ExportEncodingType = ExportEncodingType.NoEncoding;
-                // Export the report to PDF
-                report.Export(options);
-
-                    // Dispose the report object
-                    report.Close();
-                    report.Dispose();
+                    Stream stream = report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    return File(stream, "application/pdf", "Employeereport.pdf");
                 }
-
-                return RedirectToAction("PersonAction"); // or any other appropriate action
+                catch
+                {
+                    throw;
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index"); 
+            }
         }
-
-        
-
-
 
     }
 }
