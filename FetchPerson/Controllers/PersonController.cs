@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.DynamicData;
 using System.Web.Mvc;
+using System.Xml.Serialization;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using FetchPerson.Models;
@@ -112,7 +113,7 @@ namespace FetchPerson.Controllers
             ReportDocument rd = new ReportDocument();
 
             // Set the report source to the DataTable
-            rd.SetDataSource(dataTable);
+            rd.SetDataSource(persons);
 
             // Export the report to a stream and return it as a PDF file
             Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
@@ -120,6 +121,7 @@ namespace FetchPerson.Controllers
 
         }
 
+      
         public ActionResult GenerateReport()
         {
             // Retrieve data from the Web API
@@ -134,8 +136,28 @@ namespace FetchPerson.Controllers
                 report.Load(Path.Combine(Server.MapPath("~/Reporting"), "EmployeeReport.rpt"));
                 // report.Load(Server.MapPath("~/Reporting/EmployeeReport.rpt"));
 
+              
                 // Set the report data source
                 report.SetDataSource(persons);
+                 
+
+             /*   CrystalDecisions.Shared.ExportOptions CrExportOptions;
+                DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
+
+                PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
+                CrDiskFileDestinationOptions.DiskFileName = Path.Combine(Server.MapPath("~/Reporting"), "rptEmp.pdf");
+                CrExportOptions = report.ExportOptions;
+                {
+                    CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
+                    CrExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
+                    CrExportOptions.DestinationOptions = CrDiskFileDestinationOptions;
+                    CrExportOptions.FormatOptions = CrFormatTypeOptions;
+                }*/
+
+                //report.Export();
+                //report.Close();
+                //report.Dispose();
+
                 Response.Buffer = false;
                 Response.ClearContent();
                 Response.ClearHeaders();
